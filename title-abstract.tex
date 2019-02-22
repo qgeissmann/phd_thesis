@@ -1,0 +1,122 @@
+
+
+\pagenumbering{gobble}
+
+\title{High-throughput Recording, Analysis and Manipulation of Sleep in \emph{Drosophila}}
+\author{Quentin Geissmann\\
+\\
+Submitted for the degree of\\
+Doctor of Philosophy\\	
+\\
+Department of Life Sciences\\
+Imperial College London\\
+\\
+\small{Supervised by Giorgio Gilestro}\\
+\\
+}
+
+\date{\today}
+
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage{}
+%\listoftodos
+\input{./acronyms}
+
+
+\setcounter{tocdepth}{5}
+
+
+\pagenumbering{roman}
+\subsection*{This report is the result of my own work}
+No part of this dissertation has already been, or is currently being submitted by myself for any other degree, diploma or other qualification.
+
+The copyright of this thesis rests with the author and is made
+available under a Creative Commons Attribution Non-Commercial No
+Derivatives licence. Researchers are free to copy, distribute or
+transmit the thesis on the condition that they attribute it, that they do
+not use it for commercial purposes and that they do not alter,
+transform or build upon it. For any reuse or redistribution,
+researchers must make clear to others the licence terms of this
+work.
+
+This thesis does not exceed 100,000 words, including footnotes, figure legends and bibliography.
+This work was supported by the Biotechnology and Biological Sciences Research Council DTP scholarship \texttt{BB/J014575/1}
+and by the Gas Safety Trust award.
+It was completed in the Department of Life Sciences at Imperial College, London.
+
+\newpage
+\newpage
+
+\begin{abstract}
+	
+	Sleep is a fascinating mystery that has bemused thinkers since the dawn of civilisations.
+	Scientifically, the formalisation of sleep as an observable behaviour has been a conceptual milestone,
+	which has enabled researchers to address the question of its ubiquity and ultimately led to the discovery of 
+	sleep-like states in most animal phyla.
+	The fruit fly \dmel{} has long been at the vanguard of the discovery of many biological processes.
+	In particular, it has been instrumental to explain the genetic determinism of behaviours.
+	In the 2000s two seminal studies reported their discovery of a state of quiescence in \droso{} that had all characteristics of sleep.
+	Rapidly, the fruit fly became a significant and widely adopted model of sleep.
+	However, despite the large palette of advanced tools to study various aspects of the genetics, development and neurobiology,
+	the methods and conceptual tools to investigate the behavioural aspect of sleep in \droso{} lag behind, which has limited our
+	understanding of its phenomenology and function.
+	
+	
+	In the thesis herein, I first present the ethoscope platform, 
+	a tool to score behaviour in a large number of isolated animals.
+	I explain how its modular design allows for large-scale, real-time, long-lasting experiments.
+	Secondly, I provide \texttt{rethomics}, a general framework to analyse the large amount of resulting behavioural data, which has the potential to bridge the gap between experimentalists and data scientists.
+	Thirdly, thanks to these methodological developments, I reconsider the binary definition of activity 
+	in the context of sleep, address some ambiguities in the literature regarding the effect of mating and address new questions about the endogenous determinism of sleep.
+	Finally, I employ the ethoscope to perform, to my knowledge, for the first time in \droso{}, an automatic real-time sleep deprivation. The specific and parsimonious nature of this new treatment permitted a chronic depletion of sleep on a large population of flies. 
+	I show that, in stark contrast with the belief in the field, flies can perhaps survive with no sleep, 
+	challenging the notion that sleep is a universal vital need.
+	
+\end{abstract}
+
+\newpage
+\chapter*{Acknowledgements}
+
+Writing a thesis is a unique experience that I will not reiterate any time soon\emd{}at least I hope.
+In addition to being an excruciatingly long writing process, I was led to think it aims at showing one's \emph{individual} contribution to her or his field.
+Sadly, this format makes it difficult to convey my personal scientific experience of, instead, a highly collaborative exercise.
+In truth, all the work I present here results, in one way or another, from a team effort.
+Therefore, I would like to start by dedicating this thesis to all the members of my group for their direct or indirect scientific contribution but, equally, for the deep friendship that unites us all.
+
+Firstly, to Anne Petzold who, with myself, was the first member of the team. 
+I still remember vividly the first time we met, the many scientific, political and philosophical discussions we had as well as the emotions we have shared. 
+Then, I cannot forget when, later, Alice French joined the lab as a post-doc. 
+She inspired me immensely by her intellectual creativity, but also by her resilience and bravery, both personal and professional.
+Then, I truly cherished the deep, sometimes spiritual, discussions that I had Diana Bicazan, another PhD student.
+I also admire Hannah Jones, who joined the team much later, for her determination and her ability to navigate in the most challenging social 
+environments\emd{}including the clique we had created\emd{}and I can only wish I had more time to get to know her.
+
+A very special thought goes to Luis Garcia. I remember when we were introduced shortly before we started working together on the ethoscope.
+I was amazed by our complementarity, but also by his curiosity and sharpness.
+During our interactions, the connection we had developed often seemed to have a mind of its own, as if our brains had merged\emd{}this could only happen on the rare occasions when he and I were not screaming at each other over technical details.
+
+My closest collaborator of all is Esteban Beckwith. The last two result chapters of this thesis are as much his work as mine.
+His rigour, intelligence and adaptability are exemplary, and I have no doubt he will become a fantastic group leader.
+I cherish the friendship we developed and I will never forget his unconditional generosity.
+On the other hand, I am pleased to be leaving as our increasing proximity was starting to prompt various mockeries in the department.
+
+I learnt tremendously from my team leader and supervisor, Giorgio Gilestro. 
+With him, I always felt that my creativity was valued and, under his guidance, I was even encouraged to express the full extent of my craziness\emd{}I do not think many others would have let me bring snails or earthworms to the lab for my `secret weekend projects'.
+I am particularity grateful for his scientific input, but also for his constant enthusiasm and his successful effort to create a group that acts as a team.
+
+Lastly, I would like to dedicate this thesis to those who supported me in my personal life.
+In the first place to Alyssa for the enormous amount of love, hope and laughter she inoculated me with when I needed it the most.
+Also, to my family, especially my two brothers Martin and Alexandre.
+I think our shared childhood explains a lot who I am.
+My final word of gratitude is for my parents.
+I can only dream of raising my own kids half as well as they brought me up and will never forget the way they fought for me, against all odds, during my school years.
+
+
+\newpage
+
+\tableofcontents
+\listoffigures
+%\listoftables
+\printacronyms[nonumberlist]
+\newpage

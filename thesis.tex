@@ -1,0 +1,153 @@
+%\documentclass[12pt,a4paper,twoside,openright]{report}
+\documentclass[12pt,a5paper,twoside,openright]{report}
+
+\setcounter{secnumdepth}{6}
+%\usepackage{standalone}
+%\usepackage[showframe]{geometry} % Used to adjust the document margins
+
+\usepackage[bottom=1.6in,top=.8in]{geometry}
+%\usepackage{fullpage}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{nameref}
+\usepackage{currfile}
+\usepackage{grffile}
+\usepackage{graphicx}
+\usepackage[font=footnotesize]{caption}
+\usepackage[superscript,biblabel,nomove,ref]{cite}
+%\usepackage[superscript,biblabel,noadjust]{cite}
+\usepackage[toc,page]{appendix}
+\usepackage{lineno}
+
+
+\usepackage[xetex,
+pdfauthor={Quentin Geissmann},
+pdftitle={High-throughput Recording, Analysis and Manipulation of Sleep in Drosophila},
+pdfsubject={Computational biology},
+pdfkeywords={Drosophila, behaviour, sleep, high-throughput},
+pdfproducer={Latex with hyperref},
+pdfcreator={XeTex}]{hyperref}
+
+%todo remove
+%\usepackage{hyperref}
+%\usepackage[utf8]{inputenc}
+%end todo
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{gensymb}
+
+\usepackage[colorinlistoftodos,disable]{todonotes}
+%\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{csquotes}
+\usepackage{parskip} % Spaces between paragraphs
+
+\usepackage[acronym]{glossaries}
+% add binding margins
+
+%\geometry{bindingoffset=1cm}
+\usepackage{wasysym}
+\usepackage{sidecap}
+\usepackage{epigraph}
+
+\usepackage{etoolbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+%\fancyhead[C]{\rule{.5\textwidth}{4\baselineskip}}% Add something BIG in the header
+
+%todo remove
+%\usepackage[none]{hyphenat}
+%todo uncoment
+\fancyhead[EL]{\nouppercase\leftmark}
+\fancyhead[OR]{\nouppercase\rightmark}
+\fancyhead[ER,OL]{\thepage}
+
+\setlength{\headheight}{62,5pt}% ...at least 51.60004pt
+
+\usepackage{lastpage}
+
+\usepackage{titlesec, blindtext, color}
+
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+
+\preto\chapter\glsresetall
+
+\makeglossaries
+
+%~ \renewcommand*\abstractname{Summary}
+
+% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=altabcr
+\setcounter{MaxMatrixCols}{50}
+
+% package name:
+\newcommand{\py}{\texttt{python}}
+\newcommand{\re}{\texttt{rethomics}}
+\newcommand{\ctit}{\emph}
+\newcommand{\ptit}{\emph}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\droso}{\emph{Drosophila}}
+\newcommand{\dmel}{\emph{Drosophila melanogaster}}
+
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\newcommand{\FIXME}[2][]{\todo[color=cyan, #1]{\textbf{QG:} #2}}
+\newcommand{\TODO}[2][]{\todo[color=red, #1]{\textbf{QG:} #2}}
+\newcommand{\citationneeded}[2][]{\todo[color=brown, fancyline, #1]{\textbf{Citation Needed:} #2}}
+\newcommand{\contrib}{\emph}
+\newcommand{\rev}{}{}
+
+\newcommand*{\addthinspace}{\hskip0.16667em\relax}
+
+\sloppy
+
+\newcommand{\bootci}[4]{%
+	\def\temp{#1}\ifx\temp\empty%
+		${#2}$, ${\text{CI}_{95\%}=[#3,#4]}$%
+	\else%
+		${#1=#2}$, ${\text{CI}_{95\%}=[#3,#4]}$%
+	\fi%
+} 
+\newcommand{\emd}{\,---\,}
+
+%\newcommand{\sectionbreak}{\clearpage}
+
+\usepackage{pgfpages}
+%\pgfpagesuselayout{4 on 1}[a4paper]
+%\pgfpagesuselayout{2 on 1}[a4paper,landscape]
+\begin{document}
+
+\input{title-abstract}
+\setcounter{page}{1}
+\pagenumbering{arabic}
+\onehalfspacing
+
+%\linenumbers
+
+\input{1-intro/1-intro}
+\input{2-ethoscopes/2-ethoscopes}
+\input{3-rethomics/3-rethomics}
+\input{4-baseline/4-baseline}
+\input{5-sleep-deprivation/5-sleep-deprivation}
+\input{6-discussion/6-discussion}
+\newpage
+\singlespacing
+%\bibliographystyle{apalike} 
+\bibliographystyle{cj}
+
+{\footnotesize
+\bibliography{thesis.bib}{}}
+
+
+
+
+\end{document}
+
+

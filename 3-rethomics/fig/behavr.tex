@@ -1,0 +1,18 @@
+\begin{figure}[h!]
+	\centering   
+	\includegraphics[width=0.95\textwidth]{\currfiledir/.\currfilebase.pdf}
+	  \caption[The behavr data structure]{\ctit{The behavr data structure.}
+	Schematical representation of a \texttt{behavr} object, the central data structure in \texttt{rethomics}.
+	In the metadata (left), each row refers to one experimental individual. 
+	Columns are metavariables that can be either \emph{required}(\ie{} defined by the acquisition platform) or \emph{user-defined} (\emph{i.e.} arbitrary).
+	In the data (right), each row represents a time point, that is the information about one individual at one time-point.
+	Data and metadata are internally joined on the \texttt{id} field, the unique identifier of an experimental individual.
+	The column names used in this figure are only examples which will differ in practice. 
+	This figure is adapted from my own work\cite{geissmann_rethomics_2018}.
+%	B: Non exhaustive list of uses of a \texttt{behavr} table (referred as \texttt{dt}). 
+%	In addition to operations on data, which are inherited from \texttt{data.table},
+%	we provide utilities designed specifically to act on both metadata and data.  
+%	Commented examples are prefixed by \texttt{>}.
+	\label{fig:\currfilebase}
+}
+\end{figure}

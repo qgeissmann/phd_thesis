@@ -1,0 +1,30 @@
+\begin{figure}[h!]
+  \centering   
+  	\centering   
+  \begin{minipage}[t]{0.5\textwidth}
+  	\vspace{0pt}
+  	\includegraphics[width=\textwidth]{\currfiledir/.\currfilebase.pdf}
+  \end{minipage}\hfill
+  \begin{minipage}[t]{0.45\textwidth}
+  	\vspace{0pt}
+  \caption[Flowchart of the video tracking algorithm]{\ctit{Flowchart of the video tracking algorithm.}
+	\glspl{roi} are automatically defined and applied to extract as many sub-images.
+   All sub-images are then processed independently.
+In a first place, they are denoised. Then, the background statistical model is applied in order to extract foreground pixels.
+In addition, the preprocessed image updates the current background model.
+Afterwards, all objects (\emph{i.e.} connected components) are found in the foreground.
+If none were detected, then tracking is aborted for this frame.
+When several objects are detected, the foreground model applied to keep only the `best' one (\ie{} the most likely).
+Features of the remaining likely object are computed and serve to update the foreground model.
+The learning rate of the background model is increased either when several or no objects were detected.
+If only one object was found (\ie{} unambiguous match), the learning rate is instead decreased.
+Features, including position, are further used to characterise behaviour.
+  \label{fig:\currfilebase}
+  }
+ \end{minipage}
+\end{figure}
+
+
+
+
+

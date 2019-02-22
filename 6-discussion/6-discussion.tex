@@ -1,0 +1,804 @@
+\edef\figdir{\currfiledir/fig}
+
+
+\chapter{Discussion} \label{discussion}
+
+\epigraph{
+	%\includegraphics[width=.8\textwidth]{\figdir/heraclitus.pdf}
+	
+	`Consciously or not, the decision to employ a particular piece of apparatus and to use it in a particular way carries an assumption [\dots].'
+%	There are instrumental as well as theoretical expectations, and they have often played a decisive role in scientific development.'
+	}{--- Thomas Kuhn, \emph{The Structure of Scientific
+	Revolutions}~\cite[VI]{kuhn_structure_1962}
+}
+
+
+In the introductory chapter, I presented an open and phenomenological definition of sleep that relies on three behavioural observations:
+immobility, homeostasis, and lowered responsiveness.
+As I investigated the literature on sleep in \droso, 
+I identified two methodological limitations. 
+Firstly, the scoring of sleep implies measuring immobility, but the conventional tool can only detect walking, thus omitting behaviours such as grooming an feeding.
+Secondly, measuring homeostasis involves depleting sleep, and quantifying its subsequent rebound.
+However, the sleep deprivation paradigms that are generally used disturb animals regardless of their state at the time, which is unspecific.
+
+The consequences of these limitations are twofold. 
+Firstly, they both carry implicit assumptions which could lead to intractable biases. 
+For instance, what has been interpreted as alterations in sleep could, in some cases, have in fact have been changes in feeding or grooming. 
+In addition, static\emd{}as opposed to dynamic\emd{}mechanical sleep deprivation, the most commonly used paradigm, may also incidentally perturb other processes, such as feeding, so the observed sleep rebound could be, in fact, a `feeding rebound'.
+
+Secondly, these two limitations have restricted our ability to address certain questions.
+For example, the trade-off between sleeping and other states remains poorly understood since other behaviours are not measured at the same time.
+Critically, unspecific and repetitive stimuli can hardly be applied to deprive animals of sleep for more than a few hours
+and, therefore, cannot soundly be used to address the question of the viability of sleeplessness.
+
+The focus my work has been, in a first place, to develop the ethoscope, a new device that could address these two limitations. 
+In addition, I have provided \texttt{rethomics}, an analysis framework for behavioural data, which I hope will serve as a community  interface between experimentalists and data scientists, and ultimately promote a high-throughput analysis of sleep.
+Then, I have employed these two tools to study the baseline behaviour of wild-type flies in the context of sleep experiments.
+I have shown that these improvements have the potential to resolve some ambiguities in the literature and to ultimately deepen our understanding of sleep.
+Finally, I used and validated a novel, real-time, sleep deprivation paradigm and managed to perform sleep restriction for nearly ten days but, in stark contrast with the existing literature, noticed neither immediate nor delayed effect on lifespan.
+
+In this final chapter, I will first critically elaborate on the above methodological\emd{}but also epistemological\emd{}limitations that initially motivated my work and will discuss how the solutions I have developed during my doctorate address them in comparison to alternatives.
+I will also pinpoint their own shortcomings and examine possible improvements.
+Secondly, I will discuss how their application to sleep\emd{}in particular with the addition of micro-movements\emd{}already challenges the established knowledge.
+Thirdly, I will highlight the originality of the findings that resulted from the application of the \gls{dsd} protocol.
+Finally, I will conclude by examining new directions and general considerations.
+
+\newpage
+\section{Methodological improvements}
+
+In fruit flies, sleep is inferred from movement, and movement is traditionally detected, by the \gls{dam} paradigm.
+In this section, I will first highlight the limitations of the \gls{dam} system, and explain how video-tracking alternatives, in general, address them.
+Secondly, I will compare the ethoscope platform with other video-tracking methods, and describe its originality.
+Lastly, I will discuss the validity of the `five-minute rule', the wildly used methodological assumption that animals should be scored as sleeping
+when they have been immobile for 300~seconds.
+
+\subsection{The \acrlong{dam}}
+
+The \gls{dam} (see introduction fig.~\ref{fig:dam}) is undoubtedly a powerful experimental paradigm.
+At its core, the principle of keeping flies into small glass tubes has the advantage of summarising their movement to one dimension.
+Tubes are also standardised, simple to prepare, isolable and durable, 
+which is crucial for experiments on sleep.
+They are also cost-effective and can be cleaned easily.
+However, the simplification of movement to the action of walking through the midline of a tube may be somewhat restrictive.
+Namely, movements related to feeding are undetected, 
+otherwise informative positional data cannot be recorded,
+subtle movements such as twitches are missed 
+and only isolated individuals can be studied.
+
+\subsubsection{The importance of detecting feeding}
+
+The first and foremost consideration is that experimental tubes are asymmetrical, with food on one side. 
+The \gls{dam}, which is traditionally used to score activity, is,  by design, incapable of discriminating between long bouts of feeding and sleeping.
+From the extensive literature on the matter, we know, however, that feeding is regulated by many variables such as genotype, sex, internal states and so on (reviewed in \cite{xu_regulation_2008}). For instance, there are known mutants of food intake\cite{barnes_feeding_2008,meunier_regulation_2007}, and feeding behaviour is regulated by the circadian clock\cite{xu_regulation_2008}.
+
+Therefore, there have been concerns as to whether inactive animals could, in fact, be feeding.
+The first authors in the field were very aware of this limitation, and some of them actually assessed how feeding could render activity estimations erroneous.
+For example, Shaw and co-workers starved wild-type flies for 12~hours, during their \gls{d} phase\emd{}which should make them subsequently eat more\emd{}, but saw no change in beam crossing, and concluded that `eating was not miscoded as rest'\cite[supplementary material]{shaw_correlates_2000}. 
+However, it seems unreasonable to assume that this finding is \emph{a priori} generalisable to all future experimental contexts.
+In particular, studies on the genetics of sleep rely on the observation of mutants that are chosen because they widely differ from the wild-type.
+In other words, the population used to draw this conclusion is not representative of the distribution of possible phenotypes.
+
+A sensitive enough video tracking provides a clear improvement towards solving this issue as feeding is visually identifiable.
+Indeed, with good enough definition, feeding animals will often move sufficiently to be detected\emd{}and video-based validation of feeding assays has been proposed in other contexts\cite{mair_calories_2005,wong_quantification_2009,itskov_automated_2014}. 
+In addition, video-tracking generates positional data and the location of feeding animals is necessarily in very close proximity to the food.
+
+The ethoscope and most other video tracking tools, however, do not, and cannot, measure feeding behaviour or food intake as such\emd{}as there are other behaviours that involve micro-movement on the food such as egg laying or tasting.
+Furthermore, the proboscis is often occluded by the rest of the animal when it faces down.
+In order to be more conclusive regarding trade-offs or transitions between feeding and sleeping, it would be necessary to measure the correlation between micro-moving on the food and food intake, in different contexts.
+To go further, it would be very interesting to develop a module that could measure more precisely 
+how and when each animal feed.
+For instance, it should be possible to use a pair of thin electrodes inside of the glass tube to detects each `sip' and infer feeding whilst video tracking flies \cite{itskov_automated_2014} (Pavel Itskov, personal communication).
+
+A very interesting study proposed to measure feeding and sleeping at the same time using a video camera for both\cite{murphy_postprandial_2016,murphy_simultaneous_2017}. 
+In this setup, the flies feed from capillaries whose level can be visually measured.
+However, it requires daily human interventions to change the food,
+and liquid food in capillaries is known to be difficult to reach for flies\cite{ro_flic_2014}.
+
+
+\subsubsection{The added value of positional data}
+The position of a fly in its tube in the context of sleep is an interesting variable\cite{hendricks_rest_2000,dilley_behavioral_2018,donelson_high-resolution_2012,garbe_context-specific_2015}. 
+Hendricks and coworkers already noted that animals rest close to, but not on, the food\cite{hendricks_rest_2000}.
+Although this type of information could be studied in the context of sleep, it cannot be recorded with the conventional single beam paradigm.
+
+Experimentally, it is very interesting to study how animals move in an asymmetrical environment and 
+video tracking, as well as multibeam \gls{dam}, have both been suggested as tools to study the position preference over time.
+For instance, Garbe \emph{et al.} have proposed a setup where a fly can move either to a bright or a dark side in their arena, and concluded that animals preferred to sleep in shaded areas\cite{garbe_context-specific_2015}.
+In such a paradigm, the position can be interpreted as a choice, which makes it possible to address the question of the interaction between sleep and decision making.
+
+Furthermore, restricted in narrow glass tubes, flies cannot display the full extent of their behavioural repertoire.
+The analysis of trajectories\cite{martin_portrait_2004} or foraging\cite{zaninovich_single-fly_2013} of \droso{} in an open-field arena have been scrutinised with video tracking, but rarely in the context of sleep.
+In order to work at the intersection between these questions and sleep, it would be necessary to
+use another paradigm than the glass tube.
+In fact, in my laboratory, two doctoral candidates are currently using the ethoscope to undertake this task.
+
+\subsubsection{Twitches during sleep}
+In their seminal paper, Hendricks \emph{et al.} interpreted uncoordinated movements such as respiratory contractions of the abdomen or unsolicited proboscis extensions as part of sleep\cite{hendricks_need_2000}. 
+In other words, these very short micro-movements have been considered compatible with sleep, which is the accepted view in mammals\cite{blumberg_spatiotemporal_2013}.
+Since sleep twitches cannot be detected by the \gls{dam}, we have little evidence either against or in favour of this hypothesis, nor do we understand their biological significance in \droso{}.
+
+Sleep twitches have, however, been suggested as an interesting variable, and video tracking has the potential to study them\cite{zimmerman_video_2008}.
+A recent study used video recording to manually score their prevalence\cite{dilley_behavioral_2018}.
+The authors reported a larger number of twitches in young, compared to aged, flies.
+However, to my knowledge, we do not know whether twitches relate to sleep depth or responsiveness.
+It would be very interesting to address this question by dynamically probing, or attempting to sleep-deprive, animals that had just exhibited short uncoordinated movements.
+
+The algorithm I presented in section~\ref{sec:validation} attempts to detect \emph{any} movement
+and considers that sleep is interrupted by twitches. 
+However, in practice, given the standard spatiotemporal resolution ($\approx30\times{}20$~pixel per fly at $\approx{}2$~\acrshort{fps}), twitches are often missed. 
+Indeed, as I annotated myself many 10~s video fragments (which were at a higher temporal resolution, 25~\acrshort{fps}), 
+I could often not see well enough to confidently score very small micro-movements.
+In order to work on, and properly account for, twitches, a better resolution would be needed, and their study goes beyond the scope of my work so far.
+
+
+\subsubsection{Multiple animals}
+
+There is very little work on how flies sleep inside a group.
+Liu \emph{et al.} addressed this question by generalising the single beam approach to a population of flies held in a large vial\cite{liu_sleep_2015}.
+Their set-up could only count, in a given time window, how many flies crossed the midline.
+Although they attempt to draw conclusions regarding the effect of population density on sleep, such inference requires many assumptions that are very difficult to verify.
+For instance, one must hypothesise that the spatial distribution of flies is homogeneous and that individuals have the same propensity to be active. 
+Furthermore, the use of a `five-minute rule' for a population adds a level of non-linearity that is difficult to account for. 
+
+The solution to address sleep in groups of flies would be to use video-tracking tools that can label each animal.
+It is notoriously difficult to preserve the identity of animals in large groups for long durations\cite{swierczek_high-throughput_2011}.
+Indeed, even if the probability of swapping individual labels is very low, errors do propagate, but promising solutions have been developed\cite{swierczek_high-throughput_2011,perez-escudero_idtracker_2014,romero-ferrero_idtracker.ai_2018}.
+
+In a typical sleep experiment, where animals are held for several days, it seems ambitious to preserve identity throughout. However, a lot of information could already be gathered even if animals become sometimes mislabelled.
+In addition, using \droso{}, it is also possible to visually `tag' animals.
+For instance, some mutants are darker or have coloured eyes.
+Therefore, instead of tracking an entire population, perhaps a more reasonable approach is to surround a focal animal by visually different ones.
+
+
+\subsection{Alternative video tracking tools}
+
+Several video tracking platforms have been presented as alternatives to the \gls{dam} system
+\cite{zimmerman_video_2008,donelson_high-resolution_2012,gilestro_video_2012,faville_how_2015,murphy_postprandial_2016}.
+However, they suffer from two kinds of limitations.
+Firstly, they are not always trivial and practical to use in a laboratory context. 
+Secondly, their performance is rarely extensively evaluated and they only detect basic features.
+
+\subsubsection{Practicality}
+In order to promote widespread adoption of a method, it is crucial that it is usable in a laboratory context.
+Indeed, even the best tracking algorithm will meet limited adoption if it is not designed and implemented with real-life practicality in mind.
+In this respect, the \gls{dam} system is a good example of a tool that scales well, is relatively simple to use and has its own, user-friendly, acquisition software.
+
+\paragraph*{Scaling}
+The transition from \gls{dam} to video tracking comes with additional digital layers, at least two orders of magnitude more data and is often less robust\emd{}\ie{} more prone to failure.
+Although the proposed video-based alternatives 
+allow for the tracking of dozens of animals in one machine, it is not clear how they offer
+to accommodate the needs of a laboratory with multiple users, acquiring thousands of animals' position over several days\cite{zimmerman_video_2008,donelson_high-resolution_2012,gilestro_video_2012,faville_how_2015}.
+Namely, how are the data labelled, centralised and archived, and how does the system scale up (\eg{} more computers, more cameras or more time)?
+
+In order to improve throughput, I proposed a network of microcomputers that all perform their own acquisition and real-time processing, rather than a single, powerful, computer that handles all the functionalities of the platform (fig.~\ref{fig:platform}).
+In other words, the computing load is distributed on multiple devices.
+This architecture addresses several practical issues related to scaling.
+ 
+
+\rev{Firstly, it promotes compartmentalisation. For instance, a user can start their own experiment in a different physical location without risking to impact on another’s work. Specifically,  in the context of sleep and circadian rhythm, behavioural monitoring must be performed for days with a specific temperature, light and humidity regime, and with minimal human intervention (e.g. interference between experimenters). Therefore, in practice, all experiments are carried in a separate incubator that remains closed for the entire duration of the experiment. Compartmentalisation also increases robustness as the failure of one device will have a very limited overall effect. At the scale of the laboratory, portable, wireless and self-contained devices such as the ethoscope allow for a  dynamic and flexible resource allocation between experimenters that could not be achieved by having a rigid, single-computer, platform. Indeed, users can focus on setting up their experimental environment (as long as it can be reached by the wireless network) and then plug the number of machines they wish. Ethoscope can run on standard 5~V batteries for several days which  also makes them suitable for field studies.}
+
+Secondly, it centralises and organises all results in the same file system.
+The data can then be transparently queried using the \texttt{rethomic} workflow (fig.~\ref{fig:linking}).
+Indeed, data management becomes crucial when increasing experimental throughput, and it becomes necessary to implement mechanisms to prevent data loss, mislabelling and error-prone operations (such as manually finding and copying files from multiple experiments).
+
+Lastly, throughput can be increased simply by building more tracking devices, without changing how users interact with the platform.
+In an alternative scenario, where a large computer would handle all the tracking from multiple cameras, scaling up would eventually require the acquisition of a new machine, which would complicate the logistics of data handling and compromise the possibility to allocate dynamically resources in a laboratory.
+
+
+\rev{In the Gilestro laboratory, the ethoscope has become the only sleep scoring system, with 80 devices used by five to ten users on a daily basis. Over the last three years, more than one terabyte of behavioural data has already been acquired by the platform. At this stage, the throughput of video tracking in the laboratory is no longer limiting. Instead, the time-consuming preparation and cleaning of tubes as well as the availability of environmental chambers (\ie{} incubators) are now the main bottlenecks. Therefore, a further scale-up of the system may involve automating such routine tasks.}
+
+\paragraph*{Modularity}
+
+Most video-tracking software tools that apply in the context of sleep are built in a top-down manner: features are defined \emph{a priori} and centred around a graphical user interface, the functionalities being implemented to serve the interface.
+This choice of architecture can provide a quick solution to specific problems, but makes software overall less modular which hinders adaptation and partial reuse by other researchers.
+In contrast, the community could develop thoroughly documented libraries and \glspl{api} to standardise shared principles.
+The bonsai platform is a good example of a tool that emphasises on modularity, allowing users to define their own protocols with a visual programming interface\cite{lopes_bonsai_2015}.
+
+
+For this reason, I have tried to develop the ethoscope software as an \gls{api}, in the form of a \texttt{python} package.
+As such, it can interact with a rich ecosystem of scientific libraries.
+It features a set of core modules, but also many classes that can be derived for a specific use.
+For instance, the source of the raw data, tracking algorithm, real-time stimulus and other utilities can all be adapted from templates.
+
+Several of my collaborators and students I have supervised have already taken advantage of software modularity to develop different tracking algorithms, \gls{roi} definitions and hardware modules, without having to reimplement other functionalities.
+
+The ethoscope's modularity is also reflected at the hardware level. 
+In my thesis, I have presented two tools that extend the ethoscope: the servo module (fig.~\ref{fig:sd-module}) and the optomotor (fig.~\ref{fig:optomotor}).
+Interestingly, I had not anticipated the development of the optomotor itself,
+but the modular architecture of the ethoscope allowed me to support it by only writing one short source file.
+
+As I have experienced, it is difficult to predict future experimental needs and possibilities.
+Therefore, unless a clear definition of all required features can be provided, it is sensible to develop a modular tool that can accommodate unanticipated functionalities.
+
+One of such directions I am currently investigating is the potential of optogenetics\cite{riemensperger_optogenetics_2016} in the context of sleep.
+For instance, it could be possible to use the optomotor to find, or validate the implication of, a set of neurons taking part in sleep or arousal. 
+In short, one could probe arousal or sleep deprive animals by stimulating a population of neurons, using light that is invisible to flies. 
+
+\paragraph*{\emph{Post hoc} analysis}
+
+The acquisition is often only the first step of the analysis.
+Then, data must be loaded, processed, summarised, visualised and modelled.
+I would argue, with others, that high-quality, original, reproducible and scalable, 
+data analysis can only be achieved with scripting and programming interfaces\emd{}see my introduction to the 
+\texttt{rethomics} manuscript\cite{geissmann_rethomics_2018}.
+
+However, a programming interface does not mean that each user has to implement low-level functions.
+In fact, there are many specific high-level data analysis libraries and packages available for various aspects of data sciences.
+As I developed the ethoscope, I realised there was no satisfying programmatic toolbox that
+was adapted to specifically analyse large behavioural datasets in a platform-agnostic fashion and interacting with other data-science packages.
+
+I, therefore, developed \texttt{rethomics}, a framework intended to fill this niche. 
+Rather than focusing on sleep and circadian rhythm, it provides an interface for high-throughput behavioural analysis that is independent of the acquisition tool and field of research (fig.~\ref{fig:workflow}).
+Together with ethoscopes, \texttt{rethomics} facilitates the transition towards a quantitative approach to behaviour\emd{}\ie{} ethomics.
+
+
+\paragraph*{Maintenance}
+A last practical consideration is the lack of long-term support for video-tracking alternatives to \gls{dam}.
+Indeed, most of them are developed independently by each laboratory, often by one or two researchers. 
+However, modern software, in particular when it interfaces closely with hardware, will require long-term maintenance, 
+which is difficult to provide in the current academic environment\cite{morin_shining_2012}.
+Altogether, delivering a scalable tracking software is an engineering challenge that would require a team or community of qualified developers with long-term interests in mind to be addressed. 
+
+I personally do not provide a definitive solution to this issue and would argue that it relates more to the sociology and politics of academia, which is, sadly, mostly out of my control.
+However, I will note that the openness of the ethoscope makes it conceivable that other actors could maintain it and continue developing it.
+
+
+\rev{The scalability and practicality of the ethoscope have already attracted external users. For instance, several collaborators have adopted it in their own laboratory and a startup company is working on commercialising it. Since the ethoscope has been built using inexpensive and freely available technology, it is also perfectly suited for outreach and teaching. For instance, my team and I have used it in the Imperial festival and high school students have contacted my laboratory to use the machine as part of their respective projects.}
+
+\subsubsection{Validation and scope}
+
+\paragraph*{Validation}
+As I discussed in my introduction to chapter~\ref{ethoscopes}, defining motion is not trivial,
+and finding a set of pixels that defines an animal to then decide whether it is `moving' comes with its own set of assumptions.
+Interestingly, most authors in the field have applied arbitrary criteria to decide whether a fly, in a video, was moving.
+
+For instance, Zimmerman \emph{et al.} defined a fly as immobile if `no pixels [had] moved'. 
+Based on a one hour of video of two aged male flies, they reported a sensitivity of 92.6\% to movement, but do not mention specificity. 
+In addition, their tracking algorithm is limited by the fact that amount of pixel moved is an integer, which suggests sensitivity cannot be improved by lowering the threshold.
+
+The `Tracker' method, proposed by Donelson \emph{et al.}, records the position of 10~pixel long flies. 
+The authors define movement by thresholding the distance that animals moved. 
+After trying three values (2, 5 and 10 pixel$\cdot$frame$^{-1}$), they decide to use 5 pixel$\cdot$frame$^{-1}$,
+which they see as a trade-off between false positives and false negatives. 
+They did, however, not report specificity and sensitivity at these thresholds.
+
+%\todo{}\cite{gilestro_video_2012}.
+
+Faville \emph{et al.} compared three movement thresholds: 1, 3, 20~mm to \gls{dam} results.
+Without explicitly including ground truth, they empirically conclude that 1~mm has too many false positive 
+and 20~mm, too many false negatives.
+
+In contrast, I endeavoured to validate my motion detection algorithm. 
+Firstly, I generated a large amount of ground-truth data (19 animals for 144~h), in conditions that matched future experiments as much as I could.
+Secondly, I validated the predicted position by showing its very close similarity to the ground truth  (fig.~\ref{fig:rocs}A).
+Then, I based my decision of movement threshold by scanning multiple values and by drawing \gls{roc} curves, thus explicitly presenting the trade-off between specificity and sensitivity  (fig.~\ref{fig:rocs}A).
+Lastly, I accounted for the possibility of different\emd{}and heterogeneous\emd{}frame rates in the context of real-time analysis on underpowered devices (fig.~\ref{fig:velocity-correction}).
+
+\paragraph*{Scope}
+
+One serious limitation of video alternatives to \gls{dam}, including the ethoscope, is that they only record simple features such as centroid, area, width and orientation of animals. 
+Instead of focusing on acquiring data for a large number of animals, it would be possible to increase the single-animal resolution and quantify subtle changes in pose, but the tools proposed so far are restricted both in terms of hardware and tracking algorithms.
+
+The ethoscope software can function on a desktop computer, and it would be possible to use high-resolution cameras to address the hardware limitation.
+Then, there are very promising developments of algorithms based on machine learning such as \texttt{LEAP}\cite{pereira_fast_2018} and \texttt{DeepLabCut}\cite{mathis_markerless_2018} that, in principle, could be included as software dependencies.
+
+Another limitation that is related to software is the lack of tools to score sleep in multiple interacting animals, in the same \gls{roi}.
+In this area too, methods are advancing rapidly\cite{perez-escudero_idtracker_2014,romero-ferrero_idtracker.ai_2018}, and it should be possible to perform experiments to understand how populational variables (such as sex ratio and density) affect sleep.
+One could also use such tools to investigate how the immediate experience with conspecifics alter sleep, possibly in real time too.
+
+
+\subsection{The five-minute assumption}
+In addition to the scoring of movement using \gls{dam}, there is another widespread layer of assumptions made by the community: the `five-minute rule', or the idea that sleep should be scored from the observation of five consecutive minutes of immobility.
+This assumption appears in almost all sleep studies, that use \gls{dam} (for instance the ones I quoted in subsection~\ref{sec:immob}), but also in later ones that have employed video tracking.
+The rule originates from the observation, in a limited number of homogeneous wild-type animals, that
+arousal tends to globally decrease after approximately five minutes\cite{hendricks_rest_2000,shaw_correlates_2000,huber_sleep_2004}.
+%Importantly, in these studies the arability did not decrease in a step  (or even monotonic) fashion, 
+%and does not exclude the idea of continuum between immobility and deep sleep, as opposed to a binary state.
+
+In 2000, Hendricks and coworkers defined and quantified `rest' as five minutes of immobility without justifying their decision.
+In fact, they ethologically observed that flies `relax' after nine minutes.
+In the second seminal paper, Shaw \emph{et al.} report that, overall, flies that had been awake respond more than the ones that had been immobile for five minutes, but did not show the relationship between time immobile and arousability (\ie{} they do not describe arousability before and after five minutes)\cite{shaw_correlates_2000}.
+
+The most compelling evidence for the five-minute rule came four years later from Huber \emph{et al.}\cite{huber_sleep_2004}.
+They quantified the escape response according to the time engaged in immobility bouts and observed
+that responsiveness decreased to eventually reach an asymptote after five minutes\cite[fig.~2]{huber_sleep_2004}\emd{}though the large size of the error bars makes this result rather statistically inconclusive.
+In this study, the authors used only 28 virgin female Canton-S flies and aggregated response data for the first 8~h of the \gls{l} phase.
+Although they discuss their observation that, during immobility bouts in the \gls{d} phase, responsiveness decreases to an even lower level than during the \gls{l} phase, they curiously do not show data for the \gls{d} phase.
+Following these three articles, almost all studies have scored sleep as five minutes of immobility\cite{faville_how_2015} (see for instance some of the most widely cited ones: \cite{joiner_sleep_2006,pitman_dynamic_2006,cirelli_reduced_2005,kume_dopamine_2005}).
+
+More recently van Alphen \emph{et al.} comprehensively scored responsiveness of immobile flies under different condition (genotype, sex and social context)\cite{van_alphen_dynamic_2013}. 
+They concluded that, firstly, arousability was dynamic.
+Secondly, in most context, it was the lowest between 15 and 30~min (\ie{} it continued lowering after 5~min)
+Thirdly, the relationship between bout length and behavioural response was modulated by the conditions they tested. 
+
+In a complementary study, Faville \emph{et al.} found that, firstly, in the night, arousability continues to decrease after five minutes\cite{faville_how_2015}.
+Secondly, the proportion of animals reacting to vibration does not decrease monotonically with bout length 
+in the \gls{l} phase and globally remains very high\emd{}sometimes it even increases during long bouts.
+However, the authors do not discuss how their results challenge\emd{}or even falsify\emd{}the established five-minute rule, which they themselves  apply throughout their work.
+
+Using calcium imaging, Bushey \emph{et al.} were able to show that after five minutes,
+Kenyon cells, a population of neurones involved into the coding of olfactory input, were less spontaneously active, and that they responded less readily to odours when the animals had been immobile for five minutes. However, the authors did not investigate the time dynamic of the response\cite{bushey_sleep-_2015}.
+
+Because of its extensive adoption throughout the literature, the five-minute rule can be seen as part of an `operational definition' of sleep\emd{}together with the use of \gls{dam}.
+That is, an animal is defined as `sleeping' if and only if `it does not cross the mid-line of its tube for at least five minutes'.
+As I have just presented, recent investigations have shown that variables such as time of the day and sex may compromise this view\cite{faville_how_2015}. 
+In addition, the architecture of inactivity bouts is very different when using video tracking, implying that five minutes of immobility does not correspond to five minutes without walking.
+
+Furthermore, the observation of lowered responsiveness emphasises the arousal part of the behavioural definition of sleep, without accounting for the homeostasis criterion. 
+Indeed, even if arousal were consistently decreased after exactly five minutes, in all immobility bouts,
+we would still need to show that all of these events are under homeostatic regulation.
+For instance, it is plausible that even if animals are still very responsive after one minute, these first 60~seconds already take part in the homeostatic process.
+Conversely, in some context (\eg{} during the \gls{l} phase, discussed in subsection~\ref{sec:restoration-in-l}), an animal may stop and becomes less responsive, but no rebound can be observed if it is prevented to do so.
+In other words, homeostasis and arousal can be expected to mismatch and the five-minute rule should rely on both aspects.
+
+Altogether, it seems very speculative and contradictory to systematically score sleep with this criterion.
+Indeed, on the one hand, it is accepted that sleep is regulated by the clock and determined by very complex interactions between genes, internal state and environment (see subsection~\ref{sec:sleep-determinants}).
+In other words, we explain that sleep is highly variable.
+On the other hand, the five-minute rule is expected to be static and apply to all new conditions we tests, without global validation. 
+I would argue that, unless a very compelling evidence was provided towards the universality of such a rule, it should be seen as a risky inductive inference.
+It is plausible that the `rule' could be, say, five minutes in the middle of the night, but one minute in the end of the day.
+Likewise, why should we accept that mutations or other treatments severely compromise the dynamic of quiescence on a large time scale (hours and days), but assume that the five-minute rule, which is the micro-dynamic of sleep (over minutes), is intact?
+
+There are also obvious cases where this assumption is expected to fail.
+For instance, several studies have been performed at different temperatures (\eg{} thermogenetics)\cite{kayser_sleep_2015,dubowy_genetic_2016,beckwith_regulation_2017}.
+However, the metabolism and physiology of poikilothermic animals scales drastically with temperature\emd{}unless, like the circadian clock, it is temperature-compensated.
+In fact, the first quantitative validation of the rule was performed at 21$^{\circ}$C\cite{huber_sleep_2004}, whilst most experiments in the field are conducted at 25$^{\circ}$C.
+There is therefore no \emph{a priori} reasons to think that micro-dynamic of sleep will be preserved.
+
+In conclusion, the evidence behind the idea that, after five minutes of immobility, animals are asleep, regardless of genetic background, age, sex, environment and so on seems as fragile as universally adopted, and its use is, at best, unnecessary.
+In my thesis, I have tried, as much as possible to make the economy of this assumption.
+
+\newpage
+\section{Baseline sleep}
+In this section, I discuss the first aspects of my findings: 
+the difference between my results and \gls{dam} data, 
+the inclusion of micro-movements as a new behavioural state,
+the effect of mating on female sleep and
+the sources of behavioural idiosyncrasies in flies.
+
+\subsection{Differences with beam crossing}
+Video tracking tools had revealed that \gls{dam} globally overestimates inactivity\emd{}and therefore sleep\cite{gilestro_pysolo_2009, faville_how_2015}.
+However, descriptions of how this bias changes over time and for different biological variables are rare\cite{garbe_context-specific_2015}.
+If, as proposed by its proponents, video tracking is more sensitive to small movements and if small movements are themselves non-stationary, then this bias cannot be seen as constant.
+
+When I compared both immobility and sleep between \gls{dam} and the ethoscope, with my movement detection algorithm, I discovered that the consistency between the two methods depended on the time of the day and sex (fig.~\ref{fig:activity-sleep-dam-vs-etho}).
+Even though the proportion of animals scored as immobile was reduced in both sexes and at any time, the amplitude of this reduction greatly varied (fig.~\ref{fig:activity-sleep-dam-vs-etho}A), which was qualitatively  reflected in biological conclusions regarding the differences between males and females.
+Namely, sensitive movement detection led to the conclusion that females were more active than males at night, whilst beam crossing suggested that they were equally immobile.
+ 
+To go further in the description of the consensus between methods, I also analysed their rank correlation, including all animals, at different times of the day (fig.~\ref{fig:activity-sleep-dam-vs-etho}B and E).
+Since this approach compared the respective ranks of animals between both methods, it accounted for consistency at the individual level.
+I discovered that the correlation between methods greatly changed over time. 
+In particular, it was rather low ($<0.5$) for females around midday (ZT=12~h).
+I, therefore, concluded that this discrepancy could not be accounted by a constant `scaling' of the activity.
+
+\subsection{Micro-movements and behaviour space}
+
+I reasoned that the immobility, as defined by ethoscopes, included small movements whilst \gls{dam}'s activity consisted solely of walking bouts.
+In addition, I noticed that within every minute of ethoscope-scored activity, the distribution of total distance moved was bimodal, 
+suggesting a natural dichotomy between either walking a lot or, instead, moving without walking.
+I, therefore, decided to explicitly account for these small movements as a third behavioural state, which I named\emd{}rather unoriginally\emd{}`micro-movement'.
+In other words, instead of seeing behaviour as moving \emph{vs} immobile, I described it as a variable with three states: quiescent, micro-moving and walking.
+Interestingly, alternative video tracking tools for sleep can, in principle, score micro-movements too\cite{zimmerman_video_2008}.
+However, to my knowledge, they had not been studied as an explicit state in the context of sleep,
+and authors in the field consistently use and underlying binary definition of activity: immobile or moving.
+
+For this reason, I started by characterising the dynamic of these three states (fig.~\ref{fig:behavioural-state}B).
+I discovered that micro-movements in females were overall high, and changed over 24~h.
+In particular, they peaked after the transition to \gls{d} phase.
+In addition, micro-moving females were very often in close proximity to the food end of their tube (fig.~\ref{fig:behavioural-state}C), which suggested micro-movement corresponds to feeding instances.
+
+In males, micro movements were, however, rarer and not as strongly circadianly modulated(fig.~\ref{fig:behavioural-state}B).
+Furthermore, the distribution of the animals' location indicated they micro-moved and quiesced at the same place: close to, but not on, the food  (fig.~\ref{fig:behavioural-state}C).
+Males fruit flies have been reported to eat less  than virgin females\cite{meunier_regulation_2007}, which could explain this variation.
+It is therefore possible that, in males, most of the detected micro-movement correspond to instances of grooming, twitches or even false positives\emd{}which would have a probability of occurrence essentially proportional to the amount of quiescence given the time of the day.
+Moreover, males may also feed in a more fragmented manner (\ie{} in shorter bouts) as opposed to the consolidated, long, epochs that female display.
+
+In order to show the informativeness of my ternary definition of behaviour, I visualised population trajectories in a 2-simplex behavioural space (fig.~\ref{fig:clustering-mf}A and B).
+I envisage this tool as a mean to capture, summarise and compare the daily behaviour of large populations of flies.
+This representation could be particularly useful to generate hypothesis in the context of genetic screens or quantitative genetics. 
+It also demonstrated the added value resulting from the description of behaviour as a series of discrete probability distributions to assess the similarity between individuals (fig.~\ref{fig:clustering-mf}C).
+The proof of principle I presented by clustering males and females could be extended to detect cryptic clusters and, for instance, statistically link behavioural proximity to other phenotypical variables.
+
+Altogether, as long as video tracking can be used, the addition of the micro-movement dimension to the behavioural space is experimentally and conceptually costless, and I see no reasons to work exclusively within the restrictive two-states behavioural representation.
+In particular, in the context of sleep, explicitly defining micro-movements makes it possible to comprehend the difference between video tracking experiments and the existing literature\emd{}mostly based on \gls{dam} data.
+Arguably, micro-movements may not be informative in all cases (for instance, in my results, in males), 
+but they have great potential to increase our understanding of sleep and, more generally, of behavioural trade-offs.
+Indeed, they can be used to address whether animals regulate quiescence by altering their micro-movements or, rather, by changing their walking propensities (or both).
+
+The same argument could be used to extend\emd{}perhaps with better resolution\emd{}this idea to more than three states.
+For instance, we could score other behaviours (\eg{} grooming, twitches), using human knowledge, in a supervised fashion, which has the advantage of being immediately interpretable in a biological context. 
+Likewise, it could be helpful to experimentally validate further the three behavioural states to ensure they are not largely arbitrary constructs.
+
+Another, more sophisticated, approach could be to discover and score behaviours in an unsupervised manner\cite{berman_mapping_2014,maaten_visualizing_2008}.
+This would be particularly interesting to study sleep with videos at higher temporal and spatial resolution, and in an open arena, which could reveal sub-states.
+In this respect, pioneering work has been carried in the roundworm\cite{stephens_dimensionality_2008,brown_dictionary_2013} and in \droso{}\cite{berman_mapping_2014} and could be adapted to the study of sleep.
+In fact, it is possible to compare behavioural time-series in an even more agnostic fashion.
+For instance, Ben Fulcher and Nick Jones developed a framework that computes thousands of features on phenotypical time series and that has the potential to classify individuals, find outliers and generate new hypothesis\emd{}\ie{} suggest candidates variables
+\cite{fulcher_hctsa_2017}.
+It could prove very interesting to use both the hypothesis-driven and agnostic approaches together.
+
+
+One aspect of my work that I have not presented in this thesis (because too preliminary) is the analysis of the transitions between behavioural states. 
+Indeed, I have been interested in modelling behavioural time series as (hidden) markov chains in order to characterise its architecture.
+For instance, the succession of sleep stages in mammals if often seen as a series of transitions\cite{flexer_reliable_2005,perez-atencio_four-state_2018}. 
+With such a framework it would also be possible to account for the time-embedding of different behavioural orders.
+We could, for instance, borrow concepts and tools from computational linguistics and theory of speech generation, which are very advanced.
+In this perspective, we would aim at formalising  a `generative grammar' of behaviour to understanding 
+it as a probabilistic sequence, which could serve to make, for instance, predictions regarding sleep regulation.
+
+
+\subsection{Mated females may feed day and night}
+
+The widespread metabolic, physiological and behavioural effects of mating on females has been extensively studied\cite{gillott_male_2003,mcgraw_genes_2004,yapici_receptor_2008}.
+Therefore, unsurprisingly, sleep researchers had asked whether mating impact sleep\cite{isaac_drosophila_2010,garbe_context-specific_2015,garbe_changes_2016,chen_genetic_2017}.
+The consensual view is that mating reduces daytime sleep, but does not affect night sleep\cite{isaac_drosophila_2010,garbe_context-specific_2015,chen_genetic_2017}.
+These conclusions have, however, been drawn from studying flies that did not have access to nutritious food (proteins).
+A recent study failed to show such a large reduction in sleep in females that did have access to food containing yeast, employing \gls{dam}\cite{garbe_changes_2016}.
+The authors then increased the spatial resolution of their assay by using multiple \gls{ir} beams, and could then show a reduction of daytime sleep, but did not present any data for the \gls{d} phase.
+
+Since females are known to increase feeding in response to mating, I thought that the detection of their micro-movements would be crucial to understanding how they modulate sleep.
+I anticipated that the previously described phenotypes may have been instrumental artefacts due to the use of the \gls{dam}.
+Therefore, I attempted to resolve the confusion in the literature by scoring the behaviour of mated females (fig.~\ref{fig:mated-females}).
+Very interestingly, I found that immediately after mating, micro-movements increased and remained consistently high throughout the rest of the experiment.
+During the \gls{l} phase, mated females reduced walking in favour of micro-movements whilst, in the night, they reduced quiescence.
+Since the average position of mated females was very close to the food, my interpretation is that they reallocated their time to feeding and laying eggs.
+
+This example shows that the assumption behind the use of the \gls{dam} may fail conditionally on experimental variables such as the type of food used. 
+The observation of elevated activity after mating in the first study is, therefore, most likely a foraging behaviour exhibited by flies questing for laying sites and food, a behaviour that is restricted to the absence of yeast.
+The decision to prevent flies from laying eggs by not providing them with the appropriate type of food seems curious, and one could wonder if the same authors had not performed the experiment with yeast, but found no effect\emd{}which may have been seen as a negative result, and not reported.
+
+Beyond the differences between experimental paradigms, the study of mated females, which is likely the default state in wild fruit flies\cite{giardina_estimating_nodate}, can be very informative to understand the nature of sleep.
+Indeed, the observation that quiescence is reduced to an extremely low level after mating requires particular attention, and I provide two interpretations for this result.
+Firstly, females may `sacrifice' a part of their sleep to perform activities that are likely more relevant to their fitness: feeding and egg laying.
+
+Alternatively, a large part of the quiescence exhibited by non-mated females could be an accessory form of inactivity that is simply opted-out after mating.
+This latter explanation would imply that the amount of rest we measure had, at least, two cryptic components:
+\emph{sleep} and \emph{accessory rest}\emd{}theorised by Alexander Borbély as `recovery sleep' and `inactivity sleep'\cite{borbely1980sleep}.
+Experimentally, one may suggest that the former, but not the latter, is under homeostatic control
+and that the study of mated females provide a framework where only actual sleep remains.
+
+In \droso, genetic tools would allow us to address this question by, for instance, activating a subtest of neurons involved in post-mating behaviours, in a conditional manner. 
+In short, it would be possible to make a female behave as though it had mated, for say 12~h, and then reverse the mating switch\cite{rezaval_sexually_2014}.
+If no rebound is observed after such quiescence loss, it would suggest that the lost rest was accessory. 
+An interesting preliminary analysis which I have not performed would be to study the distribution of behaviour bout length after mating in order to understand whether quiescence is reduced due to fewer episodes or, rather, shorter ones.
+
+\subsection{Behavioural states are idiosyncratic}
+
+Phenotypical variance is traditionally seen as the interaction between two partitions: genetic variance and environmental variance.
+However, under certain conditions, biological entities that have the exact same genetic make-up and that experience the same environment may still exhibit different phenotypes.
+There are, for example, stochastic processes, or so-called `developmental noise', that take part at the cellular level and account for phenotypical differences\cite{yampolsky_developmental_1994}.
+During the development of a multicellular organism, such small stochastic cellular perturbations of the initial conditions may propagate and eventually generate stable, but different, phenotypes between adult organisms\emd{}though mechanisms of `developmental stability' are in place to counteracts extreme variations (see, for instance, \cite{debat_mapping_2001} for a review).
+
+Behaviours are often studied as macroscopic phenotypes produced by nervous systems.
+In addition, brains are examples of highly plastic systems that continue accumulating noise (\eg{} due to experience) after the end of an organism's `development' (\ie{} in adults).
+Therefore, there has been growing interest in understanding the processes by which animals develop behavioural personalities and idiosyncrasies\cite{kain_phototactic_2012}.
+In a broader evolutionary context, it has also been suggested that developmental stability, or the propensity to minimise adult variance, is itself an inherited trait.
+In other words, two isogenic populations may have the same average value for a given phenotype, but their variance may differ and is selectable\cite{ayroles_behavioral_2015}.
+This process is evolutionary and ecologically important insofar as it takes part in
+the capacity of a genotype to generate diversity play a role in adaptation to changing environments\cite{gavrilets_quantitative-genetic_1994}\emd{}and, in this respect, is conceptually related to `second-order selection'\cite{tenaillon_second-order_2001}.
+
+
+As I started accumulating several days of behavioural data for hundreds of animals, I was first puzzled by the extent of the variability between animals. 
+In contrast, each animal appeared to behave consistently throughout an experiment (fig.~\ref{fig:overview}).
+Since the laboratory populations of flies I used are highly inbred and that individuals had been isolated from birth,  I thought the simplest explanation to such large inter-individual variance was the product of the cryptic environmental noise in lighting, food, temperature, humidity, vibrations and so on.
+To corroborate this intuition, I recorded flies for a week, shuffled them in a new environment and tracked them for another week (fig.~\ref{fig:tube-change-correlation}).
+To my surprise, the amount of quiescence, micro-movement and walking remained highly auto-correlated despite the change of environment, suggesting an endogenous determinism of behaviour.
+In contrast, the variation in preferred resting position seemed explained mostly by the environment.
+
+At this stage, it is not possible to decide the extent to which genetics explains phenotypic variance 
+as, even in inbred lines, genetic polymorphisms often remain\cite{lewontin_general_1958,fitzpatrick_maintaining_2007}.
+I attempted to obtain isogenic fly lines in order to address this concern
+but, for technical reasons, did not manage to record their behaviour.
+It would, however, be important to perform similar experiments in genetically identical animals.
+A complementary direction could be to start from a genetically heterogeneous population and use a quantitative genetics approach to study the ability of genotypes to generate variable behaviour trajectories.
+
+
+\newpage
+\section{Sleep deprivation}
+Two of the strengths of \droso{} as a model are its small size and its short life cycle, which allows for very large numbers of animals to be used.
+Paradoxically, relatively few individuals have been used in the pioneering experiments (\eg{} \cite{hendricks_need_2000, shaw_correlates_2000, shaw_stress_2002, huber_sleep_2004}).
+In particular, the manual arousal probing and sleep deprivation protocols that have been applied by some authors were understandably very low-throughput\cite{hendricks_need_2000,shaw_stress_2002}.
+Aware of these limitations, some authors developed automatic assays to keep animals awake, but these methods (which I have presented in subsection~\ref{sec:sleep-dep-tools}) deliver numerous unspecific stimuli. 
+Therefore, it is very difficult to isolate the effect of forced activity from the possible impact of repeated stimuli on the animal's physiology.
+
+In order to address both the issue of the limited throughput and the lack of specificity of the treatment, 
+I inspired myself from pieces of apparatus used for other model organisms\cite{rechtschaffen_physiological_1983,rechtschaffen_sleep_1995,rechtschaffen_sleep_2002} to develop an automatic \acrfull{dsd} module.
+In this section, I will first elaborate on the parsimonious and specific nature of this novel approach.
+I will then discuss the validity of the consensus that daytime rest is actually sleep.
+Finally, I will conclude by examining, perhaps, the most interesting\emd{}and controversial\emd{}of my results:
+the observation that flies do survive chronic sleep deprivation.
+
+
+\subsection{\acrfull{dsd}}
+
+\subsubsection{\gls{dsd} leads to a rebound}
+
+In order to validate the use of a dynamic approach to sleep deprivation in flies,
+I programmed the servo module (fig.~\ref{fig:sd-module})  to startle animals every time they had been immobile for an `interval' of 20~s.
+This treatment considerably reduced quiescence throughout.
+After sleep deprivation had stopped, animals did show a clear and significant quiescence `rebound' (fig.~\ref{fig:overnight-dsd}).
+This result comes alongside many others to corroborate the early observations of a homeostatic rebound after rest deprivation\cite{hendricks_need_2000,shaw_correlates_2000}.
+
+Despite, a clear effect of the treatment in the early hours of the following day, all three behavioural states returned to normal levels after less than 12~h, for both males and females.
+In fact, most of the effect was limited to the first three hours of the day.
+In contrast, Hendricks and coworkers had measured an increase in rest for as long as three days post-treatment\cite{hendricks_rest_2000}.
+Shaw \emph{et al.} measured a rebound that seemed to last for only 12~h, but its amplitude appeared much larger compared to the one I could record.
+In several other studies, rebound seemed, however, limited in time and amplitude\cite{huber_sleep_2004, kume_dopamine_2005}.
+The quantitative difference between studies, including the one herein, could originate from genetic or environmental discrepancies between experiments. 
+It is also possible that conventional, static, sleep deprivation also prevents animals from feeding as they involve very frequent stimuli (sometimes as often as every 6~s\cite{shaw_correlates_2000,shaw_stress_2002}).
+This off-target effect, alongside the use of the \gls{dam}, could have led to an overestimation of the rebound in previous literature.
+
+Instead of to measuring quiescence only, I scored the three behaviours I had defined as well as the average position.
+I predicted that, since animals were startled when and only when they were resting, micro-movements would be either increased or unaffected during treatment.
+However, I found that the \gls{dsd}, with an interval of 20~s did not exclusively reduce quiescence.
+In particular, in females, micro-movements were clearly less frequent over the 12~h of treatment. 
+Furthermore, females had more micro-movements and were closer to the food immediately after the sleep deprivation night.
+Even though stimuli were given to immobile animals, it is conceivable that they mounted an escape response that changed their internal state, which reduced their propensity to feed during the night.
+
+The idea that females could have been both starved and sleep-deprived in the morning could be seen as an exciting opportunity for future experiments.
+Indeed, it would be interesting to study the hierarchy between two homeostatically regulated processes: sleeping and feeding.
+In figure~\ref{fig:overnight-dsd}, I show the population average propensities to micro-move and quiesce, which are both increased post-treatment. 
+However, at the individual level, these two processes are exclusive, and there could be a sequence of action (\eg{} first feeding then sleeping) that may be an individual trait\emd{}and which could be experimentally manipulated.
+
+Another interesting observation I made is that the number of stimuli required to keep animals moving increased during the night.
+In fact, the effectiveness of the treatment seemed to reduce as, by  the end of the 12~h, the average quiescence is greater than zero.
+The observation that sleep deprivation was decreasingly efficient has been pointed out before, and there are two non-exclusive explanations.
+Firstly, sleep pressure increases, which results in flies engaging more readily in quiescence bouts, when they can.
+Secondly, they habituate to the recurrent stimulus and therefore have a lower propensity to respond.
+For the latter reason, authors often delivered of stimuli that have some level of randomness in their timing\cite{hendricks_need_2000} or intensity\cite{faville_how_2015}.
+
+
+\paragraph*{\gls{dsd} is parsimonious}
+
+Despite the \gls{dsd} protocol seemingly mildly depriving females of food, it can be assumed to be more parsimonious than static methods for the same effectiveness.
+In particular, the average number of stimuli received by the animals was approximately one per minute (fig.~\ref{fig:overnight-sd-intervals}).
+In contrast, many studies startle animals three times more often to observe an effect\cite{shaw_correlates_2000,shaw_stress_2002,huber_sleep_2004}.
+I was nevertheless interested in investigating the extent to which fewer stimuli could still be effective at eliciting a rebound, which I tested by lengthening the initial interval of 20~s to a range of values up to 1000~s.
+I found that, in general, higher interval led to fewer stimuli and also lower rebound.
+However, in males, rebound was not statistically different between intervals lower than 7~min.
+That is, animals that were allowed to rest for a maximum of 20~s and 7~min per bout had the same rebound, even though more quiescence was `lost' in the first case.
+
+Some authors calculate rebound by comparing quiescence loss during deprivation to quiescence regained afterwards, 
+which seems burdened with the premise that, in general, there is a positive relationship between both variables\cite{shaw_stress_2002}.
+However, I found that, in males, rebound was only partially ($R^2 = 0.20$) explained by quiescence loss.
+This relationship only held for low intervals in females.
+The number of stimuli delivered was also only a poor predictor of rebounded time (not shown).
+
+Interestingly, I could characterise a statistically significant, but only modest, rebound  for long intervals ($> 10~min$),
+which corresponded to an average number of stimuli lower than ten.
+In contrast, other studies had delivered, systematically, one stimulus per hour to a population of flies overnight and saw no rebound\cite{van_alphen_dynamic_2013,faville_how_2015}. 
+In their case, it is possible that the animals that were woken up had the opportunity to immediately recover (as they had one hour before the next event).
+
+Since flies seemed to habituate to stimuli over 12~h (and 20~s interval), I decided to assess the efficiency of a \gls{dsd} 
+that would  be carried over the last four hours of the night.
+This treatment led to a significant and large quiescence rebound (fig.~\ref{fig:time-window-dsd}).
+However, even though this four hours window corresponds to the time during which females display the least micro-movements and the most quiescence, the treatment clearly decreased micro-movement.
+Conversely, females showed a subsequent `micro-movement rebound' and were closer to the food post-treatment.
+Which prompts the question of whether it is possible to alter sleep without incidentally generating some stress that reduces feeding. 
+
+\paragraph*{\gls{dsd} is specific}
+
+Systematic sleep deprivation experiments make it difficult to decide whether rebound is a consequence of loss of rest, 
+or, rather, a response to, for instance, mechanical stress. 
+With a dynamic protocol, it is, however, possible to provide a control by stimulating animals when and only when they are already moving (fig.~\ref{fig:movement-control}).
+Using this approach, I was able to show that 
+although there is a mild quiescence rebound, its amplitude is very limited and it appears that
+the number of stimuli delivered, alone, does not explain rebound.
+
+Interestingly, this treatment also reduced micro-movements in females and seems to have resulted in subsequent feeding redound, with more micro-movement and increase proximity to the food in the morning, 
+which supports the idea that increased micro-movements after \gls{dsd} resulted from a feeding homeostasis and that startled animals feed less.
+
+\paragraph*{The limits of mechanical sleep deprivation}
+Although \gls{dsd} is certainly more parsimonious and specific than its static counterpart, this series of experiments also reveals that it may have been naive to assume that mechanically stimulating a fly when it rests will only alter its sleep.
+Indeed, the sort of complex disturbance that it undergoes could change profoundly the internal state of an animal, which likely impacts other behaviours.
+It has been suggested that there is a hierarchy between feeding and escaping in \droso{} and other models, the latter inhibiting the former\cite{mann_pair_2013}, and it seems reasonable to think that startled animals will attempt to escape.
+
+In addition, I would argue that it is logically impossible to `remove sleep'\emd{}or, for that matter, any behavioural state\emd{}without incidentally affecting another behaviour (\eg{} feeding, walking, flying etc).
+Indeed, if we view behaviours as mutually exclusive and complementary, then the sum of behavioural propensities at any time, over the entire behavioural space, is one.
+Therefore, `depleting' a behavioural state necessarily results in increasing the occurrence of, at least, another one.
+Then, it is not possible to know whether the observed phenotype results from the removed sleep, or from the alteration of other behaviours.
+Therefore, it could be wiser to draw conclusions based on several sleep-deprivation methodologies. 
+For instance by assessing the consistency of results  between genetic, mechanical and `ecological' (\ie{} conspecifics or predator) sleep deprivation protocols.
+
+
+
+\subsection{Daytime rest is maybe not sleep}
+\label{sec:restoration-in-l}
+As I planed my experiments on sleep deprivation, I realised that most previous studies had either altered both daytime and nighttime sleep or nighttime sleep only.
+The apparent lack of reported rebound in animals that would have been startled only during the day made me question whether \gls{l}-phase rest qualifies as sleep altogether.
+Since a large portion of total inactivity happens during the day I believe this point is crucial for the field.
+In this subsection, I would like to discuss the contrast between the lack of empirical support for daytime sleep on one side, and its\emd{}stated or tacit\emd{}acceptance on the other side. 
+
+Homeostasis\emd{}the observation that animals compensate rest loss by subsequently increasing their immobility\emd{}is fundamental to the definition of sleep.
+In the two seminal articles of the field, homeostasis was shown elegantly 
+by depriving animals of rest during their \gls{d} phase and by observing a rebound from the beginning of the  following \gls{l} phase (\ie{} in the morning) onwards\cite{hendricks_need_2000,shaw_correlates_2000}.
+
+Interestingly, although both articles report a large fraction of the rest happening during the day (almost half of it), they do not thoroughly report daytime rest deprivation.
+Hendricks \emph{et al.} do not mention a treatment that would have occurred exclusively during the day\cite{hendricks_need_2000} whilst Shaw \emph{et al.} do so, but without presenting any data: `rest deprivation using the automated system revealed that both nighttime rest and rest during the day are homeostatically regulated (not shown)'\cite{shaw_correlates_2000}.
+In contrast with the latter claim, four years later, Huber \emph{et al.} reported convincingly the \emph{absence} of rebound when sleep deprivation is performed during the \gls{l} phase\cite{huber_sleep_2004}.
+
+To my knowledge, most following landmark studies that have performed sleep deprivation have then\emd{}at least partially\emd{}altered rest during the \gls{d} phase, 
+thus solidly corroborating the existence of a rebound after nighttime rest deprivation (for instance, \cite{kume_dopamine_2005,cirelli_reduced_2005,pitman_dynamic_2006,joiner_sleep_2006,koh_identification_2008,gilestro_widespread_2009} and many more).
+Whilst I cannot exclude the possibility that some authors did observe of a rebound after daytime deprivation, no such work has come to my attention.
+
+In addition to the observation of a homeostatic rebound, sleep is also defined by an increased arousal threshold.
+There are several studies that have compared responsiveness during the day and night and concluded that flies are a lot more arousable during the former than the latter\cite{huber_sleep_2004,van_alphen_dynamic_2013,faville_how_2015}.
+In fact, Faville \emph{et al.} indicate that flies remain highly arousable throughout daytime immobility bouts\cite{faville_how_2015}.
+
+
+From these two independent lines of evidence,
+I would expect that the most reasonable interpretation
+is that daytime rest does \emph{not} qualify as sleep, and assume that immobility during the day is phenomenologically and ontologically different from sleep.
+However, I do not feel this view is shared by many of my peers.
+
+There may be a growing consensus that sleep in \gls{l} and \gls{d} phases could be qualitatively different\cite{van_alphen_dynamic_2013,faville_how_2015}, but it has not been suggested flies do \emph{not} spontaneously sleep during the day.
+Instead, virtually all studies implicitly assume sleep happens during the day (for instance by plotting population `sleep' amount over 24~h).
+There are even studies that have observed differences in `sleep' restricted to the \gls{l} phase and that have provided a mechanistic explanation regarding their regulation\cite{ganguly-fitzgerald_waking_2006, donlea_use-dependent_2009, parisky_pdf_2008,chen_genetic_2017}.
+
+
+To address this crucial question, I performed \gls{dsd} over the entire \gls{l} phase (fig.~\ref{fig:l-phase-dsd}) and made two important observations.
+Firstly, despite the reduction of quiescence, no rebound was noticeable at the end of the treatment.
+Secondly, the number of stimuli that were automatically given to flies did not increase monotonically\emd{}in contrast to nighttime sleep deprivation. 
+My interpretation is that there was no build up of a sleep debt and therefore no rebound.
+
+An alternative explanation was, however, that, perhaps, the circadian drive somehow prevented rebound to happen.
+To address this point, I performed another experiment but, this time, stopped the treatment four hours before the end of the \gls{l} phase.
+To my great surprise, despite a shorter treatment, I was able to quantify a significant rebound.
+This last experiment appears to support the conventional view that daytime rest is indeed homeostatically regulated.
+
+I have to admit that I find these two results difficult to reconcile without making more \emph{ad hoc} assumptions. 
+These two experiments were not performed at the same time, and therefore cannot be genuinely compared.
+In addition, the overall number of involved animals is still low. 
+Considering the scope of their conclusion, I would suggest treating them as preliminary work
+and propose to perform a larger scale experiment that compares the ability to 
+rebound according to the timing of sleep deprivation in a full factorial design.
+
+In conclusion, I remain very sceptical about the existence of a daytime sleep in \dmel, but hold it would be very important to investigate this avenue.
+Indeed, it could reveal rather problematic for the credibility of the field if we later discovered that what had been called `daytime sleep' has, in fact, little in common with sleep.
+
+
+\subsection{Chronic sleep deprivation}
+
+It is often claimed that sleep is essential, the extreme manifestation of this biological need being the fact that chronic sleep deprivation is lethal\cite{cirelli_is_2008}.
+In \droso{}, the evidence supporting the notion that sleep is vital lies on one cornerstone study in which Shaw \emph{et al.} manually deprived 12 animals of sleep over approximately three days\cite{shaw_stress_2002}.
+Only four animals have been reported to die before 70~h.
+Considering the contrast between the importance and of this question 
+and the elusiveness of the answers that had been provided,
+I decided to employ \gls{dsd} to address it in a more meticulous and statistically sound fashion.
+
+
+\subsubsection{Chronic \gls{dsd} is efficient}
+
+A 9.5~days \gls{dsd} reduced quiescence throughout the experiment and resulted in a significant quiescence rebound (fig.~\ref{fig:long-sd}).
+Surprisingly, the amplitude of the following rebound was limited in males, but appeared to last several days in females.
+It is, however, unclear whether the rebound in these two-weeks-old animals can be compared, in any way,
+with the one exhibited by animals less than half their age (shown in all the other experiments).
+It would be necessary to understand the effect of age on sleep homeostasis in order to provide any meaningful conclusion regarding the amplitude of the rebound.
+
+When examining with more attention the effect of \gls{dsd} on behaviours, during treatment,  
+I noticed micro-movements were profoundly affected.
+Indeed, treated females had lost their characteristic peak of micro-movement after the transition to \gls{d} phase, but micro-moved more than the control at the end of the night.
+In males, micro-movements in sleep-deprived animals were increased throughout and were curiously even higher than control females.
+
+I observed, by inspecting individual stimulus data, that animals that were startled often responded by walking two or three millimetres, perhaps repositioning themselves before engaging in a new quiescence bout.
+Given that the shape of the micro-movement traces matches very well the average number stimulus delivery, 
+I suggest most of the micro-movement, in chronically sleep-deprived animals, corresponds to responses to stimuli with no walking.
+If this interpretation is correct, I do not see it as an argument against my paradigm, as I make the hypotheses that an animal must be awake to reposition.
+%In fact, the alternative would be to force animals to walk which could cause uncompensated metabolic expenditure.
+
+To understand further the behaviour of animals during chronic sleep deprivation, it would be necessary to decompose micro-movement in more biologically meaningful behaviours.
+In the results I presented, repositioning, feeding, grooming and twitches are all aggregated into a single variable, which is clearly a technical limitation.
+I suspect feeding-related micro-movements are masked by the larger amount of repositioning events after a stimulus.
+
+\subsubsection{Chronic \gls{dsd} is not lethal}
+
+In contrast with Shaw \emph{et al}'s work\cite{shaw_stress_2002},
+in my experiment, neither male nor female populations ($N\approx100$ each) died faster than their respective controls during a 9.5~days of sleep deprivation  (fig.~\ref{fig:long-sd-lifespan}).
+Furthermore, their lifespan post-treatment, at 29$^{\circ}$C, was unaffected.
+
+The first obvious explanation would be that complete loss of sleep is, in fact, viable\emd{}rather than a vital need\emd{}to \dmel{}.
+I cannot exclude that some flies managed to sleep during the 20~s that separated two consecutive stimuli.
+However, there is little doubt that the amount of time that treated animals could rest was severely impacted, whilst their lifespan was absolutely identical to the control's.
+If sleep was indeed physiologically crucial,
+even a partial chronic sleep deprivation  should have affected lifespan post-treatment, even subtly.
+
+There are, however, several alternative explanations for this result.
+One possibility  is that only the `accessory rest' would have been depleted.
+Indeed, the small amount of unconsolidated quiescence, between two stimuli, could have been sufficient for animals to survive. 
+In which case, it prompts the question of whether it is experimentally possible to completely deprive an animal of sleep, whilst remaining specific.
+
+Another explanation could be that sleep was indeed depleted and that is a crucial determinant of fitness, 
+but that lifespan of individual animals in small glass tubes does not capture this effect. 
+Indeed, sleep could serve a function that, in a less `forgiving' environment (\eg{} with predation and competition), is vital.
+In this case, one could argue that sleep is evolutionary, but not physiologically, vital.
+Using an analogy, a fly that would have no wings can live long in our laboratory, 
+but I doubt it would be fit in the wild, and one may argue that wings are `virtually vital' to flies in the latter environment.
+It would be very interesting to assess how sleep-deprived animals perform in competitive mating assays, learning tasks and other `challenging' contexts.
+
+An alternative possibility is that sleep deprivation actually reduces lifespan. 
+However, as I discussed above, it appears that treated animals feed less, and caloric restriction is known to enhance lifespan in \droso{} and other models (reviewed in \cite{masoro_overview_2005}).
+Therefore, it is possible that my \gls{dsd} protocol both increased and decreased longevity, with antagonistic mechanisms.
+
+\subsubsection{Lifespan is not explained by behaviour}
+
+Another argument that is put forward by the defenders of the vital need for sleep is that animals that sleep very little, such as some sleep mutants, tent to have a shorter lifespan\cite{cirelli_reduced_2005,koh_identification_2008, cirelli_is_2008,bushey_sleep_2011,stavropoulos_insomniac_2011}.
+However, most genes are pleiotropic and a phenotype as general as longevity likely results from sleep-independent effects.
+To consider an almost absurd example, in \droso{}, there are mutations that affect both eye colour and lifespan, 
+but we cannot claim that red or white eyes themselves are `vital'\cite{oxenkrug_extended_2010}.
+Likewise, the argument according to which `sleep must be vital since mutants that sleep less also die faster' is not receivable.
+Furthermore, the lifespan of \emph{fumin} mutants and brain-specific \emph{insomniac} knock-downs, which have reduced sleep, is intact\cite{kume_dopamine_2005,stavropoulos_insomniac_2011}.
+
+There is often an evolutionary trade-off between longevity and other traits, such as fecundity\cite{flatt_juvenile_2007} and immunity\cite{lochmiller_trade-offs_2000,libert_trade-offs_2006}.
+If sleep was indeed a crucial physiological function, one may predict that animals that invest more in resting would also live longer.
+However, in my experiments, lifespan could not be explained by quiescence\emd{}or, for that matter, by other behaviours (fig.~\ref{fig:long-sd-lifespan}).
+This finding is also supported by the discovery, from another team, that flies which had been selected over several generations became low-sleepers without either their lifespan or egg-to-adult viability being altered\cite{harbison_selection_2017}.
+
+
+Altogether, the result of my chronic sleep deprivation experiment challenges the recurrent claim that sleep is vital to \droso{} and invite us to rethink what is often presented as an established fact. 
+Whilst I cannot exclude that some animals may die from sleep deprivation, 
+the statement that sleep is a universal need does not appear supported by extensive evidence.
+
+\newpage
+\section{Conclusion}
+
+%\subsection{Summary}
+
+In the thesis herein, I have first described the ethoscope, an instrument that can be used to monitor simple behaviours of multiple animals over long durations. 
+Although it can clearly be improved, and I hope others will attempt this task, it already provides a competitive alternative to the \acrfull{dam} and to other video-tracking methods.
+
+In addition to the ethoscope, I delivered \texttt{rethomics} a set of \texttt{R} packages intended to streamline and standardise the analysis of behaviour such as sleep and activity, in particular when many animals and covariates are included.
+
+My new tools allowed me to account for daily behaviour with a new state, micro-movement.
+This addition was very informative in general and particularly instrumental to reconcile the inconsistent results regarding post-mating sleep in females. 
+I also described sleep as an idiosyncratic behaviour and paved the way to experiments that would explain the origin of the large variability in daily behaviour.
+ 
+The real-time capabilities of the ethoscope enabled me to apply \acrfull{dsd}, a paradigm that had not been used previously on fruit flies. 
+Although it specificity can be discussed, it provides a clear improvement over the static alternatives that are commonly used.
+Using this new method to deplete sleep, I reassess the accepted view that daytime rest is sleep, and recommend a cautious approach to this question.
+Finally, I was able to perform an unprecedented chronic sleep deprivation experiment, 
+but could not show any effect of sleep loss on longevity, a very controversial finding. 
+
+The work I have presented in this thesis emphasise that there are several important claims
+regarding the phenomenology of what we call sleep that may need to be re-evaluated.
+Since, for \droso, the definition of sleep  we operate with is behavioural only, 
+it is paramount that the conceptual, but also the technical, tools we use to study behaviour
+match the quality of the arsenal of techniques we already use to study the biology of the fruit fly.
+
+
+%
+%\subsection{Implications for the \droso{} field}
+%
+%No arousal in my work... should be addressed 
+%
+%Beyound binary sleep
+%
+%We should focus on more phenomenology before using fancy neuro-genetics 
+%
+%
+%\subsection{Broader considerations}
+%
+%Towards an ecology of sleep: if you want to understand what sleep is for, you need a functional and evolutionary framework.
+%
+%Sleep in other small animals could be asses exactly in the same way.
+%
+%In fact why restrict to animals. We can often learn by pushing the definition to the edge (sleep in unicellular).
+
+
+%
+%As inclusive as it is, such behavioural definition still restricts sleep to the experimental ability to
+%observe immobility, probe arousal and deprive organisms of sleep.
+%Many organisms (including animals) have a sessile life with little or no visible movement.
+%
+%Conversely, many life form do not have a nervous system\emd{}\eg{}unicellulars organisms\emd{}, but show activity and movement.
+%When proposing a definition that only relies on behaviour one cannot exclude that such organisms could, in principle,
+%show all features of behavioural sleep\emd{}though there is no such claim yet\cite{siegel_all_2008}.
+%The function of such hypothetical process would however be likely very different.
+%
+%
+%arousal is kinda lower by nature in some animals that have 
+%movement "inertia" (heart-rate...)
+%Arousal can be lower if animals are engaed in another activity that has a trade-off
+%e.g. a mating animal will probably carry on whatever you to to them.	
+%
+%Sleep -> nervous system?
+%
+%spiders, sessile animals?

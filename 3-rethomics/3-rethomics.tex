@@ -1,0 +1,167 @@
+\edef\figdir{\currfiledir/fig}
+
+\chapter{Rethomics} \label{rethomics}
+
+\epigraph{`I suppose it is tempting, if the only tool you have is a hammer, to treat everything as if it were a nail.'}{--- Abraham Maslow,\\
+	\emph{The Psychology of Science}~\cite[p.~15]{maslow_psychology_1966}}
+\section{Background}
+
+
+Tools such as the ethoscope platform, that I described in the previous chapter, and others allow biologists to gather a large amount of behavioural data from multiple animals.
+Some authors have suggested the use of the term `ethomics', an analogy between the high-throughput acquisition and analysis of behavioural time series and other large-scale phenotyping approaches such as transcriptomics, proteomics and metabolomics\cite{reiser_ethomics_2009}.
+The transition to ethomics era is extremely promising as it paves the way for in-depth quantitative analyses which, in turn, leads to the characterisation of new principles and ultimately a better understanding of biology\cite{brown_study_2017}.
+
+Most methods that are suffixed with the term `omics'\emd{}sometimes, I concede, generously so\footnote{see Jonathan Eisen's `Worst New Omics Word Award: Museomics' post\\  \url{https://phylogenomics.blogspot.ca/2009/01/worst-new-omics-word-award-museomics.html}}\emd{}share, at least, two features that, I would argue, are equally crucial. 
+Firstly, they rely on technological breakthroughs that have, over the last few decades, improved throughput and reduced cost of data acquisition by orders of magnitude. 
+Secondly, they adopt advances in data sciences, data management and software engineering to provide communities with sets of maintained analysis tools and databases which intercommunicate and share standards (\eg{} file formats, programming languages and software libraries).
+
+In the last decade, several commercial and academic platforms were developed to acquire  various behaviours such as activity\cite{faville_how_2015}, position\cite{pelkowski_novel_2011} and feeding\cite{itskov_automated_2014,ro_flic_2014} of single or multiple\cite{swierczek_high-throughput_2011,perez-escudero_idtracker_2014} animals over long durations (days or weeks).
+However, regarding the subsequent analysis of the results, there is less effort in the development of a high-level, unified, programmatic framework that could be used, for instance, to create pipelines.
+
+For instance, in the field of sleep and circadian rhythm, analysis tools are generally graphical user interfaces built in a `top-down' manner.
+That is, they are designed to achieve a set of predefined functionalities in the scope anticipated by their developers.
+In other words, instead of focussing on defining general data structures and concepts to then specify them to their own cases, authors have generally opted for a more rigid approach \cite{gilestro_pysolo_2009,schmid_new_2011,cichewicz_shinyr-dam_2018}.
+
+In contrast, in the  bioinformatics community, many widely adopted tools are instead built in a `bottom-up' fashion and opt for either a command-line or a programming interface.
+At the foundation level, \glspl{api} are designed and provide a well-documented set of tools for developers to build libraries.
+Then, these libraries are used by individual researchers to write scripts, or can even serve as a back-end to build user interfaces.
+This approach favours collaboration in favour of replicated work and ultimately promotes maintenance of software (\eg{} if and when the original authors retire from the field). 
+Programming interfaces are generally more robust.
+In addition, they are flexible since they can be used in conjunction with a set of other tools to build a pipeline.
+For this reason, state-of-the-art analysis and visualisation tools are based on programming interfaces\cite{wickham_ggplot2_2016}.
+
+The type of data studied in traditional bioinformatics is discrete both in space and state (\ie{} nucleotide and amino acids) and conveniently ubiquitous, which certainly encourages a shared toolbox. 
+In ethomics, the data gathered could be, at first, assumed to be prohibitively inconsistent to justify sharing tools (\eg{} what do fish movements and fruit fly feeding behaviours share?)
+However, I argue that behavioural data is conceptually largely agnostic of the acquisition platform and paradigm. 	
+Typically, the behaviour of each experimental individual is described by a long time series (possibly multivariate and irregular).
+Importantly, individuals are labelled with arbitrary metadata defined by the experimenter (\emph{e.g.} sex, treatment and genotype).
+At a low level, linking combining and processing metadata and data from hundreds of individuals, each recorded for days or weeks, is not a trivial challenge, and the community may benefit from shared solutions.
+
+In the chapter herein, I present \texttt{rethomics}, an efficient and flexible tool in \texttt{R} to unify the analysis of behavioural data.
+Firstly, I will describe a general design and workflow.
+Secondly, I will detail my computational solution to store and manipulate behavioural data.
+Thirdly, I will conceptualise a general principle to import ethomics results.
+Fourthly, I will explain how I extended the concept of the grammar of graphics\cite{wilkinson_grammar_2005,wickham_ggplot2_2016} to the visualisation of behavioural data.
+Finally, I will briefly present some of the functionalities of \texttt{rethomics} to the analysis of sleep and circadian rhythm.
+
+Waiting for peer review, I have made available the manuscript describing \texttt{rethomics} as a preprint\cite{geissmann_rethomics_2018} (see availability section~\ref{sec:rethomics-availability}). 
+
+
+\section{Workflow}
+
+\texttt{rethomics} is implemented as a collection of complementary \texttt{R} packages (fig.~\ref{fig:workflow}).
+This architecture follows the model of modern frameworks such as the \texttt{tidyverse}\cite{wickham_tidyverse_2017}, which results in enhanced maintainability and testability,
+as each step of the analysis workflow (\emph{i.e.} data import, manipulation and visualisation) is handled by a different package.
+
+\input{\figdir/workflow}
+
+The \texttt{behavr} package lies at the centre of \texttt{rethomics}.
+It was designed as a flexible and efficient solution to store large amounts of data (\emph{e.g.} position and activity) as well as metadata (\emph{e.g.} treatment and genotype) in a single \texttt{data.table}-derived object\cite{dowle_data.table_2017}.
+Input packages all import experimental data as a \texttt{behavr} table which can, in turn, be analysed and visualised regardless of the original input platform.
+Results and plots integrate seamlessly into the \texttt{R} ecosystem, thus providing users with state-of-the-art visualisation and statistical tools.
+
+
+\section{Internal data structure}
+\texttt{behavr} (fig.~\ref{fig:behavr}), is a new data structure, based on the widely adopted \texttt{data.table} object\cite{dowle_data.table_2017}.
+It is designed to address two challenges that are inherent to handling ethomics results.
+Firstly, behavioural time series can be very long as one or multiple variables may be sampled\emd{}sometimes heterogeneously\emd{}several times a second, for days or weeks.
+Each behavioural series could represent variables that encode the activity, position, orientation, size, colour and so on. 
+Secondly, a large number of individuals are is studied (often several hundreds of animals).
+In order to statistically account for covariates\emd{}for instance, in the context of full factorial experiments\emd{}it is important that each individual is associated with `metadata'.
+The metadata is a set of `metavariables' that describe all experimental conditions.
+
+\input{\figdir/behavr}
+
+A \texttt{behavr} object contains a pair of tables: metadata and data.
+The two tables are semantically linked by the extension of the \texttt{data.table} syntax, thus rendering the manipulation, the joining and the accession of metadata transparent.
+In other words, this architecture allows users to map data to its parent metadata without explicit knowledge of databases, in a statistical environment (fig.~\ref{fig:behavr2}).
+For instance, when  data is filtered, only the remaining individuals are left in the metadata. 
+It is also important that metadata and data can interoperate.
+For example, when one wants to update a variable according to the value of a metavariable (say, alter the variable $x$ only for animals with the metavariable $sex=`male'$).
+
+\input{\figdir/behavr2}
+
+
+\section{Linking and loading data}
+
+Metadata encapsulates the information describing exhaustively and unambiguously each experimental individual.
+As such, it must be provided by the user and constitute a precise record of the experiment.
+I reasoned that is the if the experimenter was required to provide a metadata table describing each individual,
+it should also include information that can be parsed to allocate a unique identifier and fetch the data in the file system.
+Indeed, the process of finding the data for each animal, when multiple devices are used and when experiments are repeated several times, is prohibitively error-prone and hardly reproducible.
+Although result files are organised in a very different manner across acquisition platform, conceptually
+the operation of enriching the metadata\emd{}which I call `\emph{linking}'\emd{}with technical details to, later, fetch the matching data\emd{}which I name `\emph{loading}'\emd{}is general and can be abstracted (fig.~\ref{fig:linking}).
+
+\input{\figdir/linking}
+
+Naturally, each acquisition platform will have a set of mandatory metavariables that are necessary for linking, which are clearly stated the documentation.
+Currently, I provide a package to read single or multibeam \gls{dam} data and another one for ethoscope files\cite{geissmann_ethoscopes_2017}.
+
+This linking and loading approach has several advantages.
+Firstly, the metadata file is a standardised structure which allows different users to collaborate using a shared format.
+Secondly, since each individual is a row in the metadata, users can\emd{}and are encouraged\emd{}to intersperse experimental conditions (otherwise, experimenters tend to confound metavariables\emd{}for example, one genotype per machine and multiple machines).
+Furthermore, this framework facilitates the addition of new replicates insofar as additional individuals will just be represented by new rows\emd{}and the date of the replicate can be statistically accounted as a covariate.
+
+\section{Visualisation}
+
+Visualisation is essential for behavioural researchers who use it to control the quality of their data,
+summarise population trends and generate hypotheses.
+In \texttt{R}, the widely adopted \texttt{ggplot2}\cite{wickham_ggplot2_2016} package implements and extends the concept of the grammar of graphics\cite{wilkinson_grammar_2005}, providing users with a very high-level syntax for data visualisation.
+
+Since behavioural time series can be prohibitively large, preprocessing is often needed before visualisation.
+In addition, \texttt{ggplot2} does not have access to metadata, which are often needed since they encapsulate biological questions.
+In order to interface the \texttt{rethomics} framework with \texttt{ggplot2} I developed \texttt{ggetho},
+which is fully compatible with \texttt{ggplot}, but also provides new layers and scales to represent behaviours.
+Figure~\ref{fig:ggetho-example} illustrates the use of \texttt{ggetho} in a restricted use case\emd{}and more examples are available on the \texttt{rethomics} website.
+
+\input{\figdir/ggetho-example}
+
+\section{Sleep and circadian analysis}
+
+\texttt{rethomics} is not exclusively designed for the analysis of sleep and circadian rhythm
+but, in the context of my research\emd{}and in order to attract users and collaborators\emd{}, I endeavoured to reproduce and extend some of the visualisation tools and computational methods used by my community.
+In the manuscript describing \texttt{rethomics}, I provide a reproducible code example to illustrate how it can be used to perform `canonical' circadian analysis\cite{geissmann_rethomics_2018}.
+In this short section, I will succinctly show some of the main functionalities, and refer the reader to the documentation for a comprehensive description.
+Specifically, I will show examples of `double-plotted actograms' and periodograms generated in the \texttt{rethomics} framework.
+
+Double-plotted actograms are widely used by chronobiologists to visually assess the regularity and period of individual behaviours.
+\texttt{ggetho} provides a generalised implementation to `multi-plot' time series (\ie{} double-plotted, triple-plotted and so on).
+Importantly, the faceting functionality of \texttt{ggplot} makes is possible to sort and draw immediately one plot per individual (fig.~\ref{fig:circadian-analysis}A).
+
+\input{\figdir/circadian-analysis}
+
+In addition to the double-plotted actograms, which are mostly for quality control and illustrative purposes, 
+circadian analysis often requires the computation of periodograms,
+the most widely used being the $\chi^2$\cite{sokolove_chi_1978} and the Lomb-Scargle\cite{ruf_lomb-scargle_1999}  methods.
+In the \texttt{zeitgebr} package, I implemented several periodogram methods.
+In addition, I endeavoured to formalise their output so that further analysis can be directly compared and reiterated with different functions.
+I also provided tools to automatically find significant peaks as well as  display and summarise periodograms.
+For instance, figure~\ref{fig:circadian-analysis}B shows the $\chi^2$ periodograms, and their respective peaks, matching the plots in figure~\ref{fig:circadian-analysis}A.
+
+The \texttt{sleepr} package, in \texttt{rethomics}, provides several routines for the analysis of sleep behaviour in \droso{}.
+In particular, it can be used to apply the five-minute rule (even in heterogeneously sample data),
+it implements the ethoscope definition of movement and velocity correction presented in the previous chapter and
+has a method to encode categorical behavioural variables as `bouts' (\ie{} onset and duration).
+
+\section{Availability and future directions}
+\label{sec:rethomics-availability}
+I implemented \texttt{rethomics} in \texttt{R}\cite{r_core_team_r_2017} since it is widely taught and adopted by statisticians and computational biologists. 
+The packages developed during my thesis are hosted on CRAN, the official repository.
+An overall exhaustive tutorial is publicly available at \url{http://rethomics.github.io}.
+This whole documentation is automatically compiled and deployed upon upstream software update,
+which ensures reproducibility of the examples.
+According to state-of-the-art practices, all packages are also individually documented,
+continuously integrated and unit tested on several versions of \texttt{R}.
+
+\newpage
+\section{Summary}
+
+\begin{itemize}
+	\item \texttt{rethomics} provides a set of packages that integrate with one another and with  \texttt{R}.
+	\item  The \texttt{behavr} object is an efficient and flexible data structure that stores both variables and metavariables.
+	\item The `linking and loading' approach is a consistent and exhaustive method to associate experimental conditions to behavioural data.
+	\item The \texttt{ggetho} package extends \texttt{ggplot} to visualise ethomics data
+	\item \texttt{rethomics} already implements a working set of tools for circadian and sleep quantification, and could develop to include other aspects of behavioural analysis.
+\end{itemize}
+
+

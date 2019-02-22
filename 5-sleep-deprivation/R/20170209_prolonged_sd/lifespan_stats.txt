@@ -1,0 +1,86 @@
+
+Call:
+lm(formula = lifespan ~ (global_avg:behaviour) * sex, data = corr_data[treatment == 
+    "Control"])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-21.7075  -1.8955   0.7701   3.7390   9.8869 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                     30.5891     1.2196  25.082   <2e-16 ***
+sexM                             0.2539     1.7870   0.142    0.887    
+global_avg:behaviourq           -5.7011     4.6150  -1.235    0.217    
+global_avg:behaviourm           -3.4215     2.9858  -1.146    0.252    
+global_avg:behaviourw           -4.0626     4.4775  -0.907    0.365    
+global_avg:behaviourx_rel       -4.8236     3.4210  -1.410    0.159    
+global_avg:behaviourq:sexM       0.4496     5.4090   0.083    0.934    
+global_avg:behaviourm:sexM      -4.9432     5.1524  -0.959    0.338    
+global_avg:behaviourw:sexM     -11.3121     9.0105  -1.255    0.210    
+global_avg:behaviourx_rel:sexM  -2.7881     4.6938  -0.594    0.553    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 5.384 on 582 degrees of freedom
+Multiple R-squared:  0.02272,	Adjusted R-squared:  0.007606 
+F-statistic: 1.503 on 9 and 582 DF,  p-value: 0.1431
+
+
+Call:
+lm(formula = lifespan ~ (global_avg:behaviour) * sex, data = corr_data[treatment == 
+    "SD"])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-20.2768  -2.7812   0.4261   3.7166   8.5491 
+
+Coefficients:
+                               Estimate Std. Error t value Pr(>|t|)    
+(Intercept)                    28.31690    0.58465  48.434   <2e-16 ***
+sexM                            1.33091    0.87849   1.515    0.130    
+global_avg:behaviourq          -6.34576   15.18545  -0.418    0.676    
+global_avg:behaviourm          -1.24651    1.80531  -0.690    0.490    
+global_avg:behaviourw          -0.07167    1.41402  -0.051    0.960    
+global_avg:behaviourx_rel      -0.81495    1.55279  -0.525    0.600    
+global_avg:behaviourq:sexM      3.77742   24.47929   0.154    0.877    
+global_avg:behaviourm:sexM      0.90617    2.58564   0.350    0.726    
+global_avg:behaviourw:sexM     -0.08564    2.19070  -0.039    0.969    
+global_avg:behaviourx_rel:sexM  0.45200    2.16106   0.209    0.834    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.911 on 554 degrees of freedom
+Multiple R-squared:  0.02401,	Adjusted R-squared:  0.008159 
+F-statistic: 1.515 on 9 and 554 DF,  p-value: 0.1392
+
+function (n, df1, df2, ncp) 
+{
+    if (missing(ncp)) 
+        .Call(C_rf, n, df1, df2)
+    else (rchisq(n, df1, ncp = ncp)/df1)/(rchisq(n, df2)/df2)
+}
+<bytecode: 0x559185477f28>
+<environment: namespace:stats>
+
+Call:
+lm(formula = lifespan ~ sex * k_interactions, data = corr_data[treatment == 
+    "SD"])
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-14.0448  -3.0644   0.3374   3.1463   8.3475 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(>|t|)    
+(Intercept)         20.58059    1.01461  20.284  < 2e-16 ***
+sexM                 5.48011    1.58541   3.457 0.000589 ***
+k_interactions       0.62917    0.08261   7.616 1.12e-13 ***
+sexM:k_interactions -0.41994    0.10929  -3.842 0.000136 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 4.621 on 560 degrees of freedom
+Multiple R-squared:  0.1264,	Adjusted R-squared:  0.1217 
+F-statistic:    27 on 3 and 560 DF,  p-value: 2.544e-16
+

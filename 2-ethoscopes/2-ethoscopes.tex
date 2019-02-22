@@ -1,0 +1,496 @@
+\edef\figdir{\currfiledir/fig}
+
+\chapter{The ethoscope platform} 
+
+\label{ethoscopes}
+
+\epigraph{
+	%\includegraphics[width=.8\textwidth]{\figdir/heraclitus.pdf}
+	`All entities move and nothing remains still.'}{--- Heraclitus, in Plato's \emph{Cratylus}\cite[401d]{plato_cratylus_1998}}
+	
+\section{Background}
+The importance of movement and immobility to our understanding of the physical world was already considered
+a crucial question by the pre-Socratic philosophers.
+The divergence between Heraclitus and Parmenides as well as  Zeno's paradoxes famously illustrate the intellectual challenges associated with the notion of movement and, ultimately, the difficulty of defining it. 
+
+Parmenides argued that movement was `impossible' whilst Heraclitus thought that `everything was in motion'.
+Modern science has since revealed, that we live on continents that are in constant motion,
+on a planet that endlessly turns around its sun, 
+within a solar system that also circles around the centre of our galaxy at nearly a million kilometre per hour,
+and that our galaxy itself drifts away from others.
+It then results that physical objects are never truly immobile and that the definition of motion is a matter of scale.
+
+
+Interestingly, the inclusive definition of sleep I described in the introductory chapter (see section~\ref{sec:sleep-def}) relies on the observation of a \emph{lack of movement} in an animal.
+In \droso{}, sleep has traditionally been inferred and, in fact, quantified by scoring long bouts of uninterrupted immobility.
+At the beginning of the twenty-first century, when fruit flies emerged as a model for sleep, the field of circadian biology was already well established
+and there were obvious conceptual, sociological and methodological overlaps between the two fields.
+In particular, circadian researchers had overwhelmingly adopted the \gls{dam} system (see introduction fig.~\ref{fig:dam}),
+an automatic platform to score the activity of hundreds of flies over
+days and weeks.
+\glspl{dam} implemented a simple idea: when a fly is active, it walks and, restrained in a narrow glass tube, eventually crosses its midline, which is recorded by an \gls{ir} beam and sensor.
+
+In addition to the momentum the \gls{dam} system had, it offered a simple read-out as well as a robust and scalable platform, making it instrumental for wide genetic screens.
+It was, therefore, \emph{de facto} adopted as the tool to score movement\emd{}and thus sleep\emd{}in our emerging field. 
+Implicitly, using the break of an \gls{ir} beam to score movement comes with the assumption that  `micro-movements' (\ie{} activities that do not involve walking), such as eating, grooming and egg-laying,
+either do not interrupt sleep bouts or that they are sufficiently unimportant to be ignored.
+
+This assumption has been either challenged\cite{gilestro_video_2012,faville_how_2015} or corroborated\cite{shaw_correlates_2000,garbe_context-specific_2015} by different studies,
+but attempts to provide tools based on video tracking have not yet been widely adopted, and most recent studies still use exclusively the \gls{dam} system.
+These video-based alternatives have, at least, two limitations. 
+Firstly, they fail to provide a system that scales `horizontally'\emd{}\ie{} a set of autonomous acquisition devices organised in a platform that centralises data collection.
+Indeed, at the scale of a laboratory, where multiple users will run simultaneous experiments, a degree of compartmentalisation is needed.
+%Incidentally compartmentalisation increases robustness, as failures are rarely generalised. %%discusion 
+Secondly, and more importantly, these methods do not provide an objective or validated algorithms to score movement, nor do they assess their respective sensitivities and specificities. 
+
+In the chapter herein, I describe the ethoscope, a platform I developed to address these two issues.
+With a highly modular design, it offers a general solution to acquire high-throughput behavioural data of small animals over long durations.
+First, I introduce the `ethoscope', which is a portable autonomous tracking device.
+Then, I describe two hardware modules that can be programmed to perform closed-loop experiments in order to, for instance, dynamically alter sleep.
+Afterwards, I illustrate how ethoscopes interoperate within a network and, importantly, how my platform can be operated in practice through its user interface.
+I conclude by presenting the tracking algorithm that I devised to robustly monitor single animals over long durations.
+Crucially, I describe and validate, using human-annotated ground-truth data, a simple method for movement classification that can be applied in real-time.
+
+This chapter complements and extends the article that I published, with my team, on the same matter\cite{geissmann_ethoscopes_2017}.
+
+\section{Device}
+
+\subsection{Core}
+In very close collaboration with Luis Garcia (then working at Polygonal Tree), I developed a novel video tracking device which we named `the ethoscope' (fig.~\ref{fig:ethoscope-device}).
+Ethoscopes are built around the `Raspberry Pi' (\url{http://www.raspberrypi.org/}), a single-board micro-computer originally designed for outreach purposes.
+It has the advantage of being very well documented, inexpensive and offers a range of readily available modules such as several \gls{ir} cameras.
+
+\input{\figdir/ethoscope-device}
+
+
+I wanted the ethoscope to be open-hardware, open-source, inexpensive and simple to build.
+For this reason, all its components were either widely commercially available, or could be created and assembled with basic knowledge of electronics and technology such as 3D printing. 
+Alongside my original peer-reviewed article, I released a full documentation, including building and maintenance instruction at \url{https://qgeissmann.gitbooks.io/ethoscope-manual}.
+
+Briefly, an upper case contains the micro-computer and a camera facing downwards.
+It is physically connected, with two laser-cut walls to a lightbox, which can fit experimental arenas in the field of view.
+The adjustable-focus camera can acquire standard 1280$\times$960~pixel videos at 25~\gls{fps}.
+%The operating system is stored on an SD card interested into the raspberry pi.
+I chose to use\emd{}and customise\emd{} the `Arch Linux' distribution as the operating system since it is very well documented and allow for extensive configuration. All software is installed on a micro SD card inserted into the microcomputer.
+
+The device measures less than $190\times{}120\times{}90$~mm.
+It is only powered through a standard USB port (5~V, 2~A) and has a wireless network card.
+For prototyping and debugging purposes, it can also be controlled through a keyboard and screen.
+Altogether, parts of the core cost approximately \pounds70.
+
+\subsection{Lightbox and arenas}
+Before they start an experiment, users enclose animals in a so-called behavioural `arena',
+which is their environment.
+In this respect, arenas define the experimental paradigm more than any other part.
+In order to promote modularity and diversity of set-ups, I designed a support that acts as a lightbox and could fit a variety of arenas.
+It transmits \gls{ir} light upward, through the arena, so that videos can be acquired during the \gls{d} phase.
+All the results I present in this thesis were acquired with the `sleep arena', as shown in fig.~\ref{fig:arena}A and B. 
+
+\input{\figdir/arena}
+
+I also endeavoured to provide a system of templates that my collaborators could derive and adapt quickly in order to implement a specific paradigm. 
+For instance, my team took advantage of this design to develop arenas aimed at studying decision making, response to odour, foraging behaviour, larval sleep and others (see fig.~3 in \cite{geissmann_ethoscopes_2017}).
+
+The sleep arena used throughout this thesis holds twenty 70~mm long and 3~mm narrow glass tubes with food on one side and cotton wool on the other side.
+The tube dimensions being the same as for the \gls{dam} system, results can be compared between platforms.
+It is also very efficient at preventing fast desiccation of the food as it can be sealed to minimise the interface between food and air.
+Therefore, fruit flies can be kept without external interventions for around ten days at 25$^{\circ}$C,
+which is very convenient in the sleep and circadian fields.
+In addition, for my purpose, since individuals are hosted in separate compartments it is simpler to startle animals specifically\emd{}\ie{} without disturbing others\emd{}in closed-loop experiments.
+
+\section{Modules}
+
+In addition to the core of the ethoscope described above, optional hardware modules can be controlled by ethoscopes in real-time.
+Here, I present two modules that I used in my thesis: the `servo' module (fig.~\ref{fig:sd-module}) and the `optomotor' (fig.~\ref{fig:optomotor}).
+
+\subsection{Servo-module}
+\label{sec:servo-module}
+The servo module (fig.~\ref{fig:sd-module}) was built primarily to perform \gls{dsd}, a paradigm I will describe extensively in chapter~\ref{sleep-deprivation}, by turning the glass tubes that host flies when they have been immobile.
+
+The module fits the bottom of the lightbox and features an array of ten servomotors (five aside) which are individually connected to
+ten glass tubes though 3D printed pulleys and o-rings.
+All servos are controlled by a commercial Lynxmotion board, 
+which communicates with the ethoscope through a standard serial interface (USB).
+
+The machine can only rotate half of the tubes in a sleep arena.
+However, in practice, the neighbouring tubes host non-startled controls, 
+encouraging systematic interspersion\emd{} which is a good practice.
+
+
+\input{\figdir/sd-module}
+
+\subsection{Optomotor}
+\label{sec:optomotor}
+I observed that the servo module often failed for various reasons. For instance, o-rings or pulleys would break, servomotor became dysfunctional and loss of electrical power could damage the board irreversibly. 
+In addition, it was time-consuming to set up and complicated to perform quality controls (\ie{} ways to ensure the machine functions).
+For these reasons, the optomotor (fig.~\ref{fig:optomotor}), a new and more robust module, was designed.
+
+\input{\figdir/optomotor}
+
+It uses gear motors instead of servomotors, and rotate tubes using simple friction, hence abolishing the need for o-rings (which were time time-consuming to install and prone to failure). To improve quality control, a push-button was configured as an interface to test the hardware post-construction, but also before and after experiments.
+
+Arian Jamasb, an undergraduate student I supervised at the time was simultaneously working on a module to perform optogenetics (\ie{} manipulate populations of neurons using light, reviewed by Riemensperger \emph{et al.}\cite{riemensperger_optogenetics_2016}), and he had the very good idea to combine both functionalities. 
+Therefore, I merged his design to mine in a single machine that can also, using optical fibres, send pulses of light directly inside the tubes. 
+Both functionalities are optional, and devices can be built with either or both.	
+
+Light and motors are both controlled by a commercial board (TLC5947 PWM Driver, Adafruit).
+For robustness and real-time applications, 
+I implemented the controller firmware in an Arduino Micro board, that receives instruction from the ethoscope through a serial connection.
+
+
+\section{Platform}
+
+\section{Implementation}
+Ethoscopes are small and can only track a few individuals at one time, so they only become interesting for high-throughput application when multiple ones are used simultaneously.
+The ethoscope `platform' is a system designed to handle multiple devices and users.
+It is made of a central computer, the `node', and multiple tracking devices (\ie{} \emph{ethoscopes}), all connected wirelessly by a custom wifi access point (fig.~\ref{fig:platform}A). 
+
+
+\input{\figdir/platform}
+
+The node is a  standard desktop computer that orchestrates the platform, but does not perform any data processing.
+Indeed, all the video analysis is done, in real time, by the ethoscopes (fig.~\ref{fig:platform}B) themselves. 
+Such distribution of computing power renders closed-loops experiments possible and makes the platform extremely scalable\emd{}insofar as the addition of new devices does not result in increased workload for the node.
+
+I anticipated that multiple updates of the software would be needed and that it would become challenging to maintain multiple devices. 
+I, therefore, implemented a system that fetches remote updates and makes them available on the local network (through a \texttt{git} repository). 
+A website user interface then allows maintainers to selectively update connected devices.
+
+
+\section{User interface}
+
+
+I invested considerable effort into making the system user-friendly.
+Indeed, its complexity is hidden to users as they interact (\ie{} start and stop experiments, update the system, download data and view arenas in real time) through a website interface (fig.~\ref{fig:interface}) which can be accessed using devices such as smartphones, tablets or computers, which renders interaction with the system very straightforward.
+It features a homepage that gives an overview of the state of the whole platform and lists all devices so they can be individually controlled (fig.~\ref{fig:interface}A).
+Each device can be accessed through its own web-page (fig.~\ref{fig:interface}B), which allows users to start and schedule experiments.
+
+\input{\figdir/interface}
+
+
+
+\section{Software and tracking algorithm}
+\label{sec:tracking}
+
+I also attempted to match the modularity of the hardware described above at the software level.
+Indeed, by design, it is flexible and general: it makes very few assumptions about the source of the primary data, the nature of the processing, the number of animals tracked and such. 
+This feature allowed some of my collaborators to define their own region of interest, variables or even tracking algorithm. For instance, Diana Bicazan a PhD student in my team has developed a module to track simultaneously multiple animals with the ethoscopes.
+In the restricted scope of this thesis, I will however only describe the tracking algorithm I designed an implemented to quantify quiescence\emd{}and ultimately infer sleep.
+
+I was specifically interested in monitoring the position of animals isolated in individual \gls{roi}.
+Individuals in different \glspl{roi} could also be assumed to be visually fairly homogeneous.
+The challenges where the relatively low resolution of the video, the necessity of a real-time implementation on a micro-computer with limited performance
+and the long duration of the tracking in a possibly changing (spatially and temporally) environment.
+The algorithm also needed to deliver variables tuned for movement detection (\eg{} sub-pixel-resolved position).
+
+I considered using tracking tools that were already available for fruit flies (described in subsection~\ref{sec:tracking-tools}), but most were designed as standalone tools, which limited control and the possibility of integration within my own software. 
+I therefore instead implemented myself a tracking algorithm using open-source \glspl{api} that have ports to \texttt{python} such as OpenCV\cite{bradski_opencv_2000}, numpy\cite{walt_numpy_2011} and scipy\cite{jones_scipy_2001}.
+
+\subsection{General description}
+
+A flowchart of the tracking algorithm I designed is shown in fig.~\ref{fig:tracking-flowchart} and each step is detailed below.
+Briefly, the first few frames are used to automatically detect \glspl{roi} see subsection~\ref{subsec:auto-roi}).
+Then, each sub-image is preprocessed (see subsection~\ref{subsec:preprocessing}).
+Dynamic statistical models of the background and the foreground are applied to detect the animal (see subsection~\ref{subsec:bg-fg-model}).
+Conditionally on its successful detection, statistical models are updated (see subsection~\ref{subsec:updatemods}).
+Sub-pixel centres of mass are used to define the position of each animal and compute velocity.
+It is corrected according to the instantaneous frame rate (see subsection~\ref{subsec:velocity-correction}).
+Finally, corrected velocity is used in a simple classifier to score a behavioural state (see section~\ref{sec:validation}).
+
+\input{\figdir/tracking-flowchart}
+\subsection{Automatic \gls{roi} detection}
+\label{subsec:auto-roi}
+
+It was not possible to guaranty that, across all devices within the platform, the position of the behavioural arena in the video frames would be consistent. 
+Indeed, small variations in the manufacture and assembly of the parts implied that the position and angle of the arena could vary between devices.
+Therefore, I preferred to automatically define \glspl{roi} from the visual `targets' that are part of the arenas (see fig.~\ref{fig:arena}) rather than hard-coding their positions.
+Prior to tracking, the first five frames of the video stream are acquired and stacked in one average image that is used as a reference.
+Then, the three targets\emd{}black dots on the edges of the arena\emd{}are located in it using a recursive thresholding algorithm for circular blob detection (similar to the one I had previously implemented for detecting bacterial colonies, see \cite{geissmann_opencfu_2013}).
+Their position is further used to compute and apply an affine transformation, and ultimately to map the image to a predefined grid specifying the relative position of the \glspl{roi}.
+
+\subsection{Preprocessing}
+\label{subsec:preprocessing}
+Firstly, the sub-image is converted to greyscale. 
+Then, a Gaussian blur with $\sigma=1.2$ \rev{and a kernel size of $11\times{}11$ pixels} is applied to denoise each image.
+\rev{This convolution reduces the high-frequency noise in each frame, which typically results from the low exposure of the sensor.
+	Insofar as my algorithm aims at locating the centroid of a fruit flies, high-frequency details such as the texture of the animal are not required.
+	The value of $\sigma$ was defined empirically by visual assessment. The kernel size is sufficient (radius greater than $3\sigma$) so that the contribution of the pixels in its edge is negligible (\ie{} their coefficients tend to zero).
+}
+
+\rev{Finally, the intensity of each pixel in the blurred source image  $bl$ is multiplied by a constant so that the resulting preprocessed image $pp$ has its mean intensity $\overline{pp} = 128$ (which is half of the 8-bit range)}:\\
+\begin{equation}
+\rev{pp_{x,y} = bl_{x,y} \cdot{} \frac{128}{\overline{bl}}}
+\label{eq:histoscale}
+\end{equation}
+
+\rev{Where,
+\begin{itemize}
+	\item $x$ is the index of a pixel in the horizontal dimension,
+	\item $y$ is the index of a pixel in the vertical dimension and
+	\item $\overline{bl}$ is the arithmetic mean of the pixel intensity in the blurred source image.
+\end{itemize}
+}
+
+
+\subsection{Background and foreground model}
+\label{subsec:bg-fg-model}
+
+\subsubsection{Background model}
+\rev{In order to discriminate the animals from their background in a robust fashion,
+I implemented a background model based on the weighted running average of each pixel.
+This method creates a persistent representation of the background that is updated by each new frame with a learning rate $\alpha$.
+I observed that flies tended to remain in the same location for long durations (sometimes hours), but moved rather quickly when they were active. This feature made it difficult to find a suitable value for $\alpha$: large values meant the static animals would fade in the background whilst low values would not update the background quickly enough when animals were active and the environment was changing. I, therefore, decided to solve this issue by applying the foreground mask in order to update the background only where the animal was not detected, an approach used by other authors\cite{koller_towards_1994,piccardi_background_2004}.
+}
+\begin{equation}
+\rev{
+bg_{t+1_{x,y}} = \begin{cases}
+(1-\alpha)\cdot{} bg_{t_{x,y}} + \alpha{}\cdot{}pp_{x,y} &, \text{ if } mask_{t-1_{x,y}} > 0.\\
+bg_{t_{x,y}} &, \text{ otherwise}.
+\end{cases}
+}
+\label{eq:bgmodel}
+\end{equation}
+
+
+\rev{Where,
+\begin{itemize}
+	\item $x$ is the index of a pixel in the horizontal dimension,
+	\item $y$ is the index of a pixel in the vertical dimension, 
+	\item $bg_{t+1}$ is the updated background model,
+	\item $bg_{t}$ is the current background model,
+	\item $pp$ is the current preprocessed image (see eq.~\ref{eq:histoscale}) 
+	\item $\alpha$ is the learning rate (see eq.\ref{eq:halflife}) and
+	\item $mask_{t-1}$ is an image that represents the location of the animal in the previous frame (see eq.~\ref{eq:threshold}).
+\end{itemize}
+}
+
+
+I observed that the frame rate was heterogeneous over time, or between devices, depending on system load.
+Therefore, instead of assuming constant frame rate (\ie{} $\alpha$ is constant), my background model explicitly accounted for the actual time difference, $\delta t$, between two consecutive frames:
+\begin{equation}
+\alpha= 1-exp(-\frac{2}{t_{1/2}} \cdot \delta t)
+\label{eq:halflife}
+\end{equation}
+$t_{1/2}$ corresponds to the `half-life' of the information in a pixel. 
+The larger $t_{1/2}$, the longer it takes for the model to learn.
+Importantly, the learning rate is dynamic $t_{1/2}$ bounded to $[1,100]s$ (see sub-section~\ref{subsec:updatemods}).
+
+\subsubsection{Foreground features}
+
+\rev{At each frame, the preprocessed image ($pp$) is subtracted from the background model ($bg$) and intensity-thresholded with the value $thr$}.
+The resulting image is a foreground mask ($mask$) that has values 1 in the foreground (where the animal is) and 0 everywhere else:
+
+\begin{equation}
+\rev{
+mask_{x,y} = \begin{cases}
+1 &, \text{ if } bg_{x,y} - pp_{x,y} > thr \\
+0 &, \text{ otherwise}.
+\end{cases}
+}
+\label{eq:threshold}
+\end{equation}
+
+\rev{Where,
+	\begin{itemize}
+		\item $x$ is the index of a pixel in the horizontal dimension,
+		\item $y$ is the index of a pixel in the vertical dimension,  	
+		\item $mask$ is the resulting foreground mask,
+		\item $bg$ is the background model (see eq.~\ref{eq:bgmodel}), 
+		\item $pp$ is the current preprocessed image (see eq.~\ref{eq:histoscale}) and
+		\item $thr$ is the value of the intensity threshold which was empirically set to 20.
+		This value was picked as a compromise to reveal the salient foreground features (such as a well-contrasted fruit fly) without detecting low-contrast noise (\eg{} image flickering).
+	\end{itemize}
+}
+
+
+Then, connected components are detected \rev{in order to separate individual objects in $mask$}. 
+If none are present, then tracking is aborted. 
+If more than one object is found, then the foreground model (see next subsection) is used to select only the most likely object.
+When exactly one object is detected, it is considered an `unambiguous' match and used immediately.
+
+Several primary features such as $XY$ position, orientation, width, height, area and average pixel intensity are computed on the single resulting foreground object.
+In order to obtain an accurate measurement of velocity, sub-pixel $XY$ position was computed using greyscale image moments as opposed to binary moments.
+
+\subsubsection{Foreground model}
+For each frame, a vector of three features\emd{}$log_{10}(area)$, height and average pixel intensity\emd{}describing the detected foreground object is stored as a new row in a feature matrix $M$.
+The likelihood $\mathcal{L}$ of candidate foreground objects, with a vector of feature $X$, is then computed based only on marginals, assuming a Gaussian distribution for the three features. 
+For each column $j$ of $M$, we have,
+
+\begin{equation}
+\rev{L_j = \frac{1}{\sigma_j\sqrt{2\pi}}\, e^{-\frac{(X_j - \mu_j)^2}{2 {\sigma_j}^2}}}
+\end{equation}
+
+\rev{Where,
+	\begin{itemize}
+		\item $j$ is the index of the feature ($j \in [1,3]$),
+		\item $\mu_j$ is the standard deviation of all stored values of a feature $j$ (see below),
+		\item $\sigma_j$ is the standard deviation of $\mu_j$,
+		\item $L$ is a resulting vector of likelihood for all three features
+		\end{itemize}
+}
+\rev{
+The mean value of a feature $j$ over the $N=1000$ past observed values is the average of the column $j$ in the feature matrix $M$}:
+\begin{equation}
+\rev{\mu_j = \sum_{i=1}^{N}M_{i,j}/N}
+\end{equation}
+
+
+
+Then, \rev{the total likelihood ($\mathcal{L}$) is the product of all marginal likelihoods}:
+$$\mathcal{L} = \prod_{j}^{} L_j\text{ .}$$
+
+Importantly, the foreground model is shared between all \glspl{roi}, which assumes relative feature homogeneity between foreground objects. 
+When tracking visually similar animals (\eg{} animals of similar size)\emd{}an assumption that is expected to hold unless tracking visually very different animals. 
+
+\subsubsection{Updating the background model}
+\label{subsec:updatemods}
+The background model is systematically updated for each frame, but its half-life is set dynamically.
+Namely, it decreases when foreground identification was ambiguous (several objects), or aborted (no objects).
+
+\begin{equation}
+\rev{
+	t_{1/2}' = \begin{cases}
+	c \cdot{} t_{1/2} &, \text{ if unambiguous foreground}\\
+	c^{-1}  \cdot{} t_{1/2} &, \text{ otherwise}.
+	\end{cases}
+}
+\label{eq:updatebg}
+\end{equation}
+
+\rev{Where,
+	\begin{itemize}
+		\item $t_{1/2}$ is the half-life used to calculate the learning rate $\alpha$ in eq.~\ref{eq:halflife},
+		\item $t_{1/2}'$ is the updated half-life to be used for the next frame ($t_{1/2}'$ is bounded in $[1, 100]~s$) and
+		\item $c$ is set empirically to 1.2. This value implies that the learning rate can scale approximately 10 times in  13 frames ($1.2^{13} \approx 10$).	
+\end{itemize}
+}
+
+\rev{Such a dynamic learning rate allows the algorithm to use prior knowledge to decide when the background information should be kept or discarded.
+Indeed, the assumption that exactly one animal should be located in each frame can be used to tune the learning rate in real time.
+Namely, when multiple or no objects are detected, a fast learning rate allows the background model to quickly update to resolve this ambiguity.
+In this case, a half-life of 1~s, which has the same order of magnitude as the frame rate ($\approx 2~s^{-1}$), is appropriate.
+When only one object is detected (in most cases), a relatively slow learning rate (half-life of 100~s) allows the background to persist in a time scale that is compatible with the duration of immobility bouts of a fly (often minutes).
+Since ambiguities are often only transient, I opted to change the learning rate smoothly (eq.~\ref{eq:updatebg}).
+This avoids unnecessarily discarding further background information once the ambiguity has been resolved.
+}
+
+
+\section{Validation and behaviour scoring}
+\label{sec:validation}
+
+\subsection{Ground truth}
+There where two aspects of the tracking algorithm that I thought were necessary to validate. 
+Firstly, how much error is associated with the detected position of an animal.
+Secondly, how sensitive and specific to subtle movements the algorithm was.
+In order to address both points, I acquired a 144~h video at 25~\acrshort{fps} of 19 fruit flies with an ethoscope.
+Importantly, a visually heterogeneous dataset was generated by using both males and females, which differ in size and aspect.
+In addition, since images are different between \gls{l} and \gls{d} phases (see fig.~\ref{fig:arena}B), the video was acquired during both phases (12:12~h, L:D), using only transmitted \gls{ir} light during \gls{d} phases.
+
+Then, ten-second videos of each \gls{roi} were systematically sampled from the raw video every hour, generating more than 2,500 sub-videos.
+Sub-videos were then presented one by one, and in a random order, to several independent fruit fly researchers who were asked to:
+
+\begin{enumerate}
+	\item click on the centre of the fly on the first frame, and 
+	\item score one of three behaviours in the whole ten seconds.
+\end{enumerate}
+
+Ground-truth $XY$ position was then obtained by computing the median $X$ and $Y$ between human annotations (to make position robust to spurious clicking errors).
+\emph{A priori} defined behaviours were: 
+
+\begin{itemize}
+	\item walking,
+	\item micro-movement, and
+	\item immobile.
+\end{itemize}
+
+If several behaviours were observed within the same ten seconds sub-video, observers were asked to prioritise the behaviour with the largest amount of movement, $\mathcal{M}$, such that
+$$\mathcal{M}_{walking} > \mathcal{M}_{micro-mov.} > \mathcal{M}_{immobile}\text{ .}$$\\
+As a result, 1413 annotations were generated by, at least, three experts each. 
+Furthermore, a subset of 1297 consensual (\ie{} majority rule) videos were kept for validation.
+
+\subsection{Results}
+
+Independently to the ground truth generation, the same raw video was re-sampled at 2.1\acrshort{fps}, which is a realistic operational frame rate for the ethoscope, and subsequently processed with the tracking algorithm described in section~\ref{sec:tracking}.
+Both position (fig.~\ref{fig:rocs}A) and behaviour scoring (fig.~\ref{fig:rocs}B) were compared to ground truth for validation.
+
+The median of distances between ground truth and inferred position was
+0.31~mm, corresponding to a tenth of a fly body length (fig.~\ref{fig:rocs}A).
+Over the 1297 annotation, all distances were lower than one body length (with a maximum distance of 2.6~mm).
+
+Several scalar variables, such as cumulative distance, mean and maximal velocity, mean proportion of pixels displaced and others were defined for each 10~s sub-video. Random forest variable importance\cite{breiman_random_2001} was used
+to empirically rank predictors.
+Maximal velocity ranked on top as the single `best' predictor, 
+and appeared to provide, on its own, a reliable classifier of movement.
+In other words, maximal velocity in a 10~s  epoch could predict behaviour with a pair of thresholds.
+In order to assess the performance of such classifier, I computed \gls{roc} curves for both the movement detection and the walking detection thresholds (fig.~\ref{fig:rocs}B).
+
+\input{\figdir/rocs}
+
+\subsection{FPS-dependent velocity correction}
+\label{subsec:velocity-correction}
+
+I then noticed that the computed velocity depended on the frame rate of the processed video.
+Indeed, when performing the above analysis at different frame rates, the computed velocities appeared unstable and artificially increased with \gls{fps} (fig.~\ref{fig:velocity-correction}A).
+It is difficult to predict analytically the exact relationship between the measured velocity and \gls{fps} since it depends both on the structure of the background noise and the types of foreground movements.
+
+
+\input{\figdir/velocity-correction}
+
+
+Therefore, I proceed empirically: I down-sampled the original validation video (144~h at 25 \gls{fps}) to eight different new ones with a frame rate between 1 and 5 \gls{fps}. 
+Then, I used the tracking algorithm described above on each new video and computed all instantaneous velocities.
+The maximal velocity in each consecutive 10~s epoch \rev{($max(V)$)} was computed in all cases.
+Ground truth data was used to perform \gls{roc} curves and, for each \gls{fps}, define the threshold (\rev{$T^*_m$}) that lead to a \gls{fpr} of movement equals to $0.5\%$ (\rev{$T^*_m = T_{m_{FPR=0.005}}$}).
+The relationship between FPS and the threshold on maximal velocity was then modelled with a linear regression (fig.~\ref{fig:velocity-correction}B):
+
+\begin{equation}
+\rev{
+	T^*_m(FPS) = a \times{} FPS + b
+}
+\label{eq:velocor}
+\end{equation}
+
+\rev{Where,
+	\begin{itemize}
+		\item $T^*_m(FPS)$ is the movement threshold that gives $FPR=0.005$ (see fig.~\ref{fig:rocs})
+		\item $a$ is the slope of the linear model and
+		\item $b$ is the intercept
+	\end{itemize}
+}
+
+
+Linear model fitting gave $a = 0.003$ and $b$ was not statistically significantly different from zero, so I used $b=0$.
+Therefore, velocity ($V_{corr}$) calculations were corrected with:
+
+
+\begin{equation}
+V_{corr} = \frac{V}{a\times{}FPS}
+\label{eq:velocor2}
+\end{equation}
+
+This way, \rev{when greater than 1, the maximal value of the corrected velocity ($max(V_{corr})$) in a 10~s epoch indicates movement in the foreground with a specificity of $99.5\%$}.
+
+
+To further ensure the effectiveness of this method, the density of all instantaneous velocity was re-computed after correction (fig.~\ref{fig:velocity-correction}C).
+Visual inspection confirmed the effectiveness of my empirical correction.
+
+%\missingfigure{A final boxplot+ B confusion matrix}
+\section{Implementation and availability}
+
+Both device and node run a version of the GNU/Linux operating system, which is highly customisable and open-source.
+Their respective \glspl{api} were implemented, as part of this project, in \texttt{python} programming language.
+An extensive documentation of both hardware and software, alongside building and maintenance instruction was made
+available at \url{http://gilestrolab.github.io/ethoscope/}.
+
+\newpage
+\section{Summary}
+
+\begin{itemize}
+	\item Ethoscopes are open-source and inexpensive video tracking tools for small animals. They can be extended through the addition of hardware and software modules.
+	\item All machines are controlled through a scalable platform that centralises updates and data management.
+	\item The framework can be used remotely through a user interface designed for experimentalists.
+	\item The default tracking algorithm detects small movements in single fruit flies with great accuracy.
+	Its simple design means it can be used in real time on raspberry pis.
+\end{itemize}
+
+

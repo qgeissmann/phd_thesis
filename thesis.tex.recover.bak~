@@ -1,0 +1,208 @@
+\documentclass[12pt,a4paper,twoside,openright]{report}
+\setcounter{secnumdepth}{6}
+%\usepackage{standalone}
+%\usepackage[showframe]{geometry} % Used to adjust the document margins
+\usepackage{geometry} % Used to adjust the document margins
+
+%\usepackage{fullpage}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{nameref}
+\usepackage{currfile}
+\usepackage{grffile}
+
+
+\usepackage{graphicx}
+\usepackage[font=footnotesize]{caption}
+\usepackage[noadjust]{cite}
+\usepackage[toc,page]{appendix}
+\usepackage{lineno}
+
+
+\usepackage[xetex,
+pdfauthor={Quentin Geissmann},
+pdftitle={High-throughput Recording, Analysis and Manipulation of Sleep in Drosophila},
+pdfsubject={Computational biology},
+pdfkeywords={Drosophila, behaviour, sleep, high-throughput},
+pdfproducer={Latex with hyperref},
+pdfcreator={XeTex}]{hyperref}
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{gensymb}
+
+%\usepackage[colorinlistoftodos,disable]{todonotes}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{csquotes}
+\usepackage{parskip} % Spaces between paragraphs
+
+\usepackage[acronym]{glossaries}
+% add binding margins
+
+%\geometry{bindingoffset=1cm}
+\usepackage{wasysym}
+\usepackage{sidecap}
+\usepackage{epigraph}
+
+\usepackage{etoolbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\usepackage{titlesec, blindtext, color}
+
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+
+
+\preto\chapter\glsresetall
+
+
+
+\makeglossaries
+
+%~ \renewcommand*\abstractname{Summary}
+
+% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=altabcr
+\setcounter{MaxMatrixCols}{50}
+
+% package name:
+\newcommand{\py}{\texttt{python}}
+\newcommand{\re}{\texttt{rethomics}}
+\newcommand{\ctit}{\emph}
+\newcommand{\ptit}{\emph}
+\newcommand{\eg}{\emph{e.g.}}
+\newcommand{\ie}{\emph{i.e.}}
+\newcommand{\droso}{\emph{Drosophila}}
+\newcommand{\dmel}{\emph{Drosophila melanogaster}}
+
+\newcommand{\specialcell}[2][c]{\begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+\newcommand{\FIXME}[2][]{\todo[color=cyan, #1]{\textbf{QG:} #2}}
+\newcommand{\TODO}[2][]{\todo[color=red, #1]{\textbf{QG:} #2}}
+\newcommand{\citationneeded}[2][]{\todo[color=brown, fancyline, #1]{\textbf{Citation Needed:} #2}}
+\newcommand{\contrib}{\emph}
+
+\newcommand*{\addthinspace}{\hskip0.16667em\relax}
+
+\sloppy
+
+\newcommand{\bootci}[4]{
+	\def\temp{#1}\ifx\temp\empty
+		${#2}$, ${\text{CI}_{95\%}=[#3,#4]}$
+	\else
+		${#1=#2}$, ${\text{CI}_{95\%}=[#3,#4]}$
+	\fi
+} 
+\newcommand{\emd}{\,---\,}
+
+%\newcommand{\sectionbreak}{\clearpage}
+
+\begin{document}
+
+
+\pagenumbering{roman}
+
+\title{High-throughput Recording, Analysis and Manipulation of Sleep in \emph{Drosophila}}
+\author{Quentin Geissmann\\
+\href{mailto:quentin.geissmann13@imperial.ac.uk}{quentin.geissmann13@imperial.ac.uk}\\	
+\\
+\\
+Supervisor: Giorgio Gilestro\\
+Co-supervisor: Stefanos Zafeiriou\\
+\\
+\\
+Imperial College London
+\\
+\\
+\\
+\\
+\\
+}
+
+\date{\today}
+
+\clearpage\maketitle
+\thispagestyle{empty}
+\newpage{}
+\listoftodos
+\newpage
+\input{./acronyms}
+
+\begin{abstract}
+%
+%The fruit fly (\dmel) has recently proven very valuable for understanding the genetic basis of sleep.
+%In this model organism, sleep is inferred and quantified from the lack of movement.
+%Despite attempts to provide alternative accurate motion classifiers, most results to date have relied on \gls{dam}, a minimalist movement detection device that is only sensitive to flies that are walking several times their body length.
+%This latter approach has been shown to overestimate sleep, as fruit flies can be active without walking long distances (\eg{} when feeding and grooming).
+%
+%In the study herein, I present a working prototype of the ethoscope platform, a novel behavioural monitoring system.
+%I thoroughly validate it and demonstrate great position accuracy as well as very reliable motion classification.
+%As a proof of principle, I compare sleep patterns between males and females.
+%I discover that improving quality of motion classification can considerably change the nature of biological results. 
+%For instance, I show that females sleep less than males during the day, but also, surprisingly, during the night. 
+%I extend the analysis of baseline sleep by studying its variability. 
+%I discover that sleep patterns are very variables within animals, even though they are environmentally and genetically controlled.
+%Despite this large variability in the population, I show a strong temporal individual redundancy of sleep patterns.
+%
+%To take full advantage of real time analysis, I couple video tracking with a novel ethoscope module that allows me to dynamically sleep deprive fruit flies; a paradigm that had not been automatised before.
+%I show that my device can very effectively elicit a moving response. 
+%Then, I apply it to socially naive animals and show a robust rebound in males, but very surprisingly no effect in females.
+%
+%These very promising results indicate that my methods will allow experimenters to observe phenotypic differences that may have otherwise been overlooked.
+%In conclusion, I foresee great potential for adoption of my platform in \droso{} sleep research.
+%The ethoscope system has a very modular architecture, which makes if very flexible, robust, inexpensive, scalable and user-friendly.
+%Therefore, it has potential to transcend inter-disciplinary boundaries and to be applied to several model organisms.
+
+
+
+\end{abstract}
+\setcounter{tocdepth}{5}
+
+\newpage
+
+Acknowledgments
+%
+%C'est pas sorcier
+%
+%Yazour 
+%Jancosky
+%
+%FXDCM
+%
+%Gerard Chazal
+%
+%Jean-Claude Ameisen
+%
+%
+%
+%
+
+\newpage
+
+%\tableofcontents
+%\listoffigures
+%\listoftables
+
+%\newpage
+\\begin{environment-name}
+content
+\end{environment-name}
+
+\onehalfspacing
+\input{1-intro/1-intro}
+\input{2-ethoscopes/2-ethoscopes}
+\input{3-rethomics/3-rethomics}
+\input{4-baseline/4-baseline}
+\input{5-sleep-deprivation/5-sleep-deprivation}
+\input{6-discussion/6-discussion}
+\newpage
+\singlespacing
+\bibliography{thesis.bib}{}
+\bibliographystyle{ieeetr}
+
+
+\end{document}

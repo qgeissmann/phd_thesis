@@ -1,0 +1,427 @@
+\edef\figdir{\currfiledir/fig}
+ 	
+\chapter{Sleep Deprivation} \label{sleep-deprivation}
+
+
+\epigraph{
+	%\includegraphics[width=.8\textwidth]{\figdir/heraclitus.pdf}
+	`To die: to sleep; \\
+   	No more; and by a sleep to say we end'}{--- Hamlet, in \emph{Hamlet}~\cite[Act III, Scene 1]{shakespeare_hamlet_1905}}
+
+\section{Background}
+
+
+In the 17\textsuperscript{th} century, Robert Boyle initiated the first chemical revolution, which transmuted alchemy into chemistry.
+It culminated, a century later, with Antoine de Lavoisier's law of conservation of mass.
+The contribution of Lavoisier\emd{}and other chemists such as Joseph Priestley\emd{}to chemistry is well known, but less so is his work on the physiology of respiration\cite{karamanou_antoine-laurent_2013}.
+He applied the same analytic and rigorously quantitative method to understand both combustion and respiration\emd{}\ie{} measuring the heat animals produce and the oxygen they consume.
+In order to prove oxygen was crucial for respiration, the chemists would deprive an animal of it\cite{underwood_lavoisier_1944}.
+The idea of \emph{removing a single component from a biological system in order to understand its necessity} was both powerful and modern.
+
+
+In this `analytic' perspective, the first step to understanding the functions of sleep would be to deplete sleep altogether.
+As simple as this idea may seem, it has proven very difficult to implement.
+Indeed, the various ways of forcing an animal to be awake may themselves create confounding stresses.
+For instance, an animal exposed to recurrent stimuli that are primarily intended to remove sleep may incidentally stop eating, and the observed physiological consequences could result from starvation more than sleep deprivation.
+
+As I have discussed in the introductory chapter, the question of the inevitability and necessity of sleep is central (see subsection~\ref{sec:lethality}).
+In order to address it, authors have mostly performed chronic sleep deprivation, sometimes until the subjects died.
+In this type of experiments, the above consideration\emd{}of reducing confounding stresses\emd{}becomes crucial.
+Indeed, various stresses are known to impact lifespan, presumably independently of sleep.
+Hoping to render sleep deprivation more specific, authors have sometimes used a paradigm that I call \gls{dsd}, which implies startling an animal 
+only when it is asleep.
+
+Perhaps the most illustrative example of \gls{dsd} is the `disk-over-water' method
+developed by Allan Rechtschaffen and Bernard Bergmann\cite{rechtschaffen_physiological_1983,rechtschaffen_sleep_1995,rechtschaffen_sleep_2002}.
+It pairs two rats: the `totally sleep deprived' and the `control'  animals and records their brainwaves. 
+As soon as the former starts sleeping, a feedback, computer controlled, mechanism rotates the disk on top of which both animals stand.
+Unless they wake up and walk, this rotation makes them fall into a water container underneath.
+The control rat is therefore disturbed the same number of times as the deprived one but can sleep when its pair was awake.
+Since its invention, the disk-over-water paradigm was also used on pigeons\cite{newman_sleep_2008}.
+In different model organisms, for instance, in mice, other automatic tools were developed to perform long lasting \gls{dsd}\cite{fenzl_fully_2007}.
+
+However, in insects, the only form of \gls{dsd} that has been performed, to my knowledge, is \emph{manual}.
+That is, researchers have startled animals immediately after they had noticed\emd{}subjectively\emd{}them being immobile.
+For instance, cockroaches have been kept awake by `gentle shaking of the cages whenever the animals were immobile'\cite{tobler_24-h_1992}, or to dynamically sleep deprive fruit flies, `experimenter[s] would gently tap on [the fly's] tube'\cite{shaw_stress_2002}.
+
+In addition to the subjective nature of the scoring and stimulus delivery, manual sleep deprivation also severely reduces experimental throughput, especially when performing chronic sleep deprivation, which also explains the low number of individuals used: 12 flies \cite{shaw_stress_2002} and 10 cockroaches\cite{tobler_24-h_1992}.
+
+In chapter~\ref{ethoscopes}, I presented the ethoscope as a device capable delivering real-time stimuli and, in chapter~\ref{baseline}, 
+I showed how video tracking was instrumental for augmenting our understanding of sleep, at least in undisturbed animals.
+In the chapter herein, I will, firstly, validate ethoscopes as a tool to perform \gls{dsd}, study the induced quiescence rebound and explore the effect of important parameters.
+Secondly, I will show that rebound is conditional on stimuli being given when animals were quiescent.
+Thirdly, I will investigate how the effectiveness of sleep deprivation depends on when it occurs.
+Lastly, I will conclude by presenting the results of an unprecedented large-scale chronic sleep deprivation and study its effect on longevity.
+
+Part of the work presented in this chapter is available as a preprint\cite{geissmann_most_2018}. 
+It results from a collaboration, in equal part, between Esteban Beckwith\emd{}without whom this work could not have been carried\emd{}and myself.
+
+
+\section{Results}
+\subsection{\acrfull{dsd}}
+
+%As opposed to \emph{systematically} startling animals regardless of their behavioural states, 
+%real time tracking allows for \emph{dynamic} interaction. 
+Most sleep deprivation experiments in \dmel{} had been performed in a mechanical and \emph{static} fashion. 
+In this paradigm, stimuli are delivered to animals independently of their behavioural states (\ie{} walking, feeding and immobile individuals are startled regardless).
+Since the ethoscopes allow both for real-time tracking and can be extended with modules that deliver individually targeted stimuli, it is possible
+to employ a \emph{dynamic} paradigm instead.
+Such \gls{dsd}, implies animals are only startled when they were already sleeping\emd{}or at least immobile.
+
+Since, to my knowledge, this was the first implementation of \gls{dsd} in \dmel, I focussed on validating this novel paradigm.
+Specifically, I wanted to verify that it was effective at depleting quiescence and could indeed elicit a homeostatic rebound.
+In addition, I wanted to take advantage of the behavioural states I had defined to better characterise sleep deprivation.
+
+I recorded baseline behaviour of both males and females for two days, after which they were either dynamically sleep deprived for 12~h, over their \gls{d} phase, or left undisturbed as controls ($N > 145$ for all four groups).
+Servo modules were fitted to ethoscopes so that every other experimental tube could be turned with a servomotor, pulley and o-ring system (see subsection~\ref{sec:servo-module}).
+Devices were programmed to startle animals when and only when they had been immobile for 20~s.
+The trends of each behavioural state, position and  number of stimuli given during the experiment as well as the following quiescence rebound were then analysed (fig.~\ref{fig:overnight-dsd}).
+
+\input{\figdir/overnight-dsd}
+
+During \gls{dsd}, the propensity of all three behaviours and the average position  were altered, both in males and females (fig.~\ref{fig:overnight-dsd}A).
+Throughout the treatment, animals that received stimuli were more active: quiescence was greatly reduced whilst walking frequency was increased.
+To my surprise, the fraction of time spent micro-moving was also reduced for both sexes along the night.
+Startled animals were also, on average, further away from the food, and closer to the middle of their tube, which is typical in highly walking animals.
+
+Interestingly, the number of stimuli delivered increased monotonically during the night, to reach nearly 1~min$^{-1}$ (fig.~\ref{fig:overnight-dsd}B).
+In a dynamic context, the delivery of an increasing number of stimuli could indicate a growing sleep pressure insofar as increasingly more startling events were required to keep animals active.
+In total, females and males experienced
+\bootci{}{631}{586}{680}, and
+\bootci{}{558}{499}{617}, stimuli,
+respectively.
+%\emd{}a value comparable to the an interval.
+
+
+On the day immediately following the end of the treatment ($t \in [1,1.5]$~d) the behaviour of the startled population was different from their respective controls (fig.~\ref{fig:overnight-dsd}A).
+In particular, quiescence, which had been reduced during treatment, was then increased. 
+Such rebound is generally interpreted as partial homeostatic recovery, which is defining of sleep.
+Conversely, walking was decreased throughout this post-treatment period. 
+Another noticeable difference was that females increased their proportion of micro-movement immediately after the \gls{dsd},
+which coincided with a greater proximity to the food. 
+This observation suggests that this paradigm may also incidentally reduce feeding, and therefore cause a similar homeostatic recovery (\ie{} a `feeding rebound').
+
+After the end of the treatment, the differences with the controls faded over time, to the extent that both groups had the same levels for all behaviour states after 12~h of recovery.
+In fact, most of the rebound happened in the first three hours. 
+I was interested in expressing rebound in terms of relative quiescence (\ie{} compared to predicted values) in this 3~h period.
+To predict quiescence during the rebound I used a linear model, fitted on the undisturbed control populations (see methods subsection~\ref{subsec:mm-rebound}).
+Both females and males displayed a consistent rebound after treatment, recovering \bootci{}{33.4}{29.0}{37.9}, and 
+\bootci{}{42.4}{37.6}{47.6}, 
+minutes, respectively(fig.~\ref{fig:overnight-dsd}C).
+
+
+Since a 12~h \gls{dsd}, with a 20~s interval, seemed to cause stress that impacted behaviour beyond quiescence \emd{}\eg{} micro-movements were reduced\emd{}I suspected that such treatment resulted in confounding stress.
+I postulated that such off-target effects would increase\emd{}and the specificity of the sleep deprivation decrease\emd{}with the number of stimuli.
+I, therefore, became interested in investigating the extent to which the interval could be lengthened.
+In other words, whether sleep deprivation would be effective, and possibly more parsimonious if animals were allowed to rest for longer than 20~s at a time.
+To investigate this avenue, I widened the scope of this experiment by testing a range of intervals, from 20 to 1000~s (fig.~\ref{fig:overnight-sd-intervals}).
+
+In this experiment, animals were only allowed to be quiescent for a given interval of time, after which they were startled by a stimulus. 
+Each fly has a constant interval over the 12~h treatment, but intervals varied between animals.
+From the distribution of bout length in preliminary experiments, I observed that approximately 5\% of animals never experienced a quiescence bout longer the 1000~s over 12~h (not shown).
+Therefore, I used this value as the longest interval. 
+I hypothesised that the difference of effect between two intervals would depend more on their ratio than on their difference, and opted for a (pseudo-)dynamic, rather than linear, range, with ten intervals between 20 and 1000~s (see, for instance, the x-axis in fig.~\ref{fig:overnight-sd-intervals}A).
+
+\input{\figdir/overnight-sd-intervals}
+
+As expected, the overall number of stimuli delivered decreased with interval duration were very similar between sexes, for the same interval  (fig.~\ref{fig:overnight-sd-intervals}A).
+For the longest interval, 1000~s, the average was only \bootci{}{6.83}{5.95}{7.77}, stimuli, overnight.
+In fact, several individuals never experienced long enough quiescence bouts to be startled ($N_{stimuli} = 0$).
+
+Following the 12~h of treatment, the quiescence rebound was quantified (fig.~\ref{fig:overnight-sd-intervals}B).
+In females, the amplitude of the rebound appeared to be a monotonic function of the interval, with the largest rebound for 20~s.
+In males, however, this relationship resembled more a step function, with rebound of similarly high amplitude for intervals under 500~s, 
+and of similarity low amplitude for longer intervals.
+
+I also wanted to investigate how the number stimuli explained the actual quiescence during the treatment, and whether these two variables could predict the amplitude the rebound itself.
+Within each interval group, there was a positive relationship between quiescence during the sleep deprivation night, and the number of stimuli delivered
+(linear model,
+%$P(q) =N_{stimuli} \times Interval \times sex $, 
+overall $R^2 = 0.83$, fig.~\ref{fig:overnight-sd-intervals}C).
+Indeed, the dynamic nature treatment means that animals that had a higher propensity to sleep exhibited more quiescence, but also needed more stimuli to be kept awake.
+
+To some extent, the amount of quiescence loss during sleep deprivation (compared to forecasted quiescence) linearly predicted rebound in males.
+Overall, 1~minute was recovered for every \bootci{}{2.53}{2.21}{3.05},~min of depleted quiescence ($R^2 = 0.199$).
+Interestingly, the slope was not significantly affected by the value of the interval.
+
+In females, the picture was more complex since there was an interaction between the interval and the slope.
+Namely, the effect of lost quiescence on rebounded time was only clear for short intervals.
+
+
+
+\subsection{Movement control}
+
+It was plausible that rotating tubes multiple times during the night, regardless of the state of the animal inhabiting it, would alter behaviour the next morning.
+If so, what I had interpreted as a rebound would have been, in fact, a behavioural response to the stimulus rather than to the loss of quiescence.
+To address this issue, and to assess the specificity of this response, I made the hypotheses that animals which were stimulated when already active,
+would not lose sleep, and therefore would not show or need a rebound.
+To verify this prediction, I programmed modules to deliver the same stimulus but, this time,
+when and only when animals had just crossed the midline of their tubes (fig.~\ref{fig:movement-control}).
+The other experimental conditions were otherwise identical: males and females received a 12~h treatment after two days of baseline.
+
+\input{\figdir/movement-control}
+
+In males, no alteration of any behavioural state or position could be characterised during the treatment night (fig.~\ref{fig:movement-control}A).
+Furthermore, after the end of the treatment, the behaviour of treated animals was not different from the control group.
+
+In contrast, in females, micro-movements were reduced throughout treatment.
+In the following hours three, there appeared to be less walking, but more micro-movements in startled animals.
+In addition, quiescence seemed slightly increased in the startled group after treatment.
+
+
+For both males and females, the number of stimuli delivered followed the expected activity pattern:
+many stimuli around the phase transition times ($t \in \{12, 24\}$), and fewer in between (fig.~\ref{fig:movement-control}B).
+In total, females and males experienced
+\bootci{}{237}{191}{290}, and
+\bootci{}{383}{329}{438},
+stimuli,
+respectively\emd{}a value comparable to the total number of stimuli delivered during dynamic sleep deprivation with a 20~s interval.
+
+
+After treatment, females and males had more quiescence than expected, with mean rebound amplitude of
+\bootci{}{9.38}{6.03}{12.97}, and
+\bootci{}{8.83}{0.88}{15.73}, extra minutes in 3~h, respectively (fig.~\ref{fig:movement-control}C).
+Despite statistically significant values, the effect size was very moderate compared to the \gls{dsd} experiment (see fig.~\ref{fig:overnight-dsd}C), suggesting only a partial effect of stimuli-induced stress on rebound.
+
+\subsection{Timing of Sleep Deprivation}
+
+The previous experiment showed that stimuli delivery itself seems to cause a mild rebound.
+In addition, it appeared that sleep deprivation implied delivering an increasing number of stimuli, which suggested that flies may habituate to the stimulus.
+For these two reasons, I was interested in increasing specificity of sleep deprivation by further reducing unspecific stress.
+
+The first obvious approach to reduce the absolute number of stimuli was to increase the immobility interval that triggers a stimulus, which I already presented in fig.~\ref{fig:overnight-sd-intervals}.
+A simple alternative is however to shorten the permissive window during which animals can be startled.
+As a proof of principle, I decided to pursue this direction, and targeted the \gls{dsd}, with the original interval of 20~s, to the end of the \gls{d} phase, in $t \in [20,24]~h$ (fig.~\ref{fig:time-window-dsd}).
+
+\input{\figdir/time-window-dsd}
+
+Consistently with the results of the 12~h \gls{dsd}, the treatment reduced quiescence and micro-movement, whilst increasing walking (fig.~\ref{fig:time-window-dsd}A).
+Conversely, in the three hours following it, there was more quiescence, but less walking. 
+
+The number of stimuli delivered also increased monotonically during the 4~h of treatment.
+By the end of the night it had reached approximately 30 stimuli per hour\emd{}whilst the overnight \gls{dsd} experiment was nearly $60~h^{-1}$ (fig.~\ref{fig:time-window-dsd}B).
+The average total number of stimuli delivered to females was 
+\bootci{}{72.5}{58.2}{89.3}, and males were startled
+\bootci{}{105}{80}{132}, times.
+
+Both sexes significantly increased quiescence after four hours of \gls{dsd}.
+Altogether, females and males recovered an average of 
+\bootci{}{26.7}{20.7}{33.3}, and
+\bootci{}{27.1}{19.7}{34.0}, minutes of quiescence, respectively
+(fig.~\ref{fig:time-window-dsd}C).
+In comparison, depriving the same treatment performed over 12~h had resulted in rebounds of 33 and 42 minutes, for females and males, respectively.
+
+
+\subsection{\acrlong{l} phase sleep deprivation}
+Some of the first studies in the field, had shown that no sleep rebound occurred when deprivation was performed during the \gls{l} phase\cite{hendricks_rest_2000,huber_sleep_2004}.
+In addition, it had been shown that day and night quiescence have different architecture and that, during the \gls{l} phase, flies had higher arousability\cite{huber_sleep_2004,faville_how_2015}.
+I was very curious to reassess these findings with my novel, more specific, sleep deprivation paradigm.
+Therefore, I carried an experiment where animals were startled after an interval of 20~s in \gls{zt}~$\in [0,12]$~h,
+and quantified the quiescence rebound (fig.~\ref{fig:l-phase-dsd}).
+\input{\figdir/l-phase-dsd}
+
+Throughout the 12~h of treatment, quiescence was reduced and walking activity increased, both in male and females (fig.~\ref{fig:l-phase-dsd}A).
+In females, micro-movement was slightly reduced in the startled group, whilst treated males had, to my surprise, more micro-movement than their control groups.
+The increased micro-movement in males did not coincide with an increased proximity to the food. 
+Indeed, the average position of startle animals was very close to the middle of the tube ($position = 0.5$), suggesting no dramatic increase in feeding.
+Following the end of the treatment, neither position nor behavioural states were different between treated groups and their respective controls.
+
+In contrast with the overnight \gls{dsd} (fig.~\ref{fig:overnight-dsd}B), the number of stimuli delivered during the \gls{l} phase did not increase monotonically (fig.~\ref{fig:l-phase-dsd}B).
+Instead, it peaked after approximately eight hours before decreasing. 
+This suggests either no cumulative effect of sleep pressure or an overriding control of the clock on the sleep homeostat.
+Over the 12~h of treatment, females and males received \bootci{}{355}{307}{406}, and \bootci{}{517}{444}{586}, stimuli, respectively.
+
+No rebound (\ie{} increase in quiescence in the three hours following the treatment) could be 
+characterised\emd{}for females and males,
+\bootci{\Delta{}q_{rebound}}{-0.470}{-6.61}{5.38}, and
+\bootci{\Delta{}q_{rebound}}{-4.67}{-12.0}{1.85}, minutes
+(fig.~\ref{fig:l-phase-dsd}C).
+
+Altogether, this experiment suggests that day and night quiescence are indeed very different.
+In the light of this results and other studies\cite{hendricks_rest_2000,huber_sleep_2004,faville_how_2015}, and insofar as homeostasis is a cornerstone of the definition of sleep, it seems difficult to consider quiescence during the \gls{l} phase as \emph{de facto} sleep.
+
+Another explanation for this result is that animals were indeed sleeping, and that my treatment was effective at depriving them.
+However, the lack of observable rebound could have been due to the possibility that the circadian clock overrode the homeostat specifically during \gls{zt}~$\in [12,15]$~h.
+In other words, there could be non-permissive time windows during which the clock unilaterally determines activity and therefore masks the otherwise observable sleep rebound.
+
+In order to decide between these two mutually exclusive hypotheses, I decided to perform a similar quiescence restriction experiment that also started at the onset of \gls{l} phase but, this time, 
+stopped four hours before the transition to the \gls{d} phase.
+If a rebound could then be observed, despite a shorter treatment,
+the `clock-masking' hypothesis would be favoured (fig.~\ref{fig:zt0-8-dsd}).
+
+\input{\figdir/zt0-8-dsd}
+
+As expected from the previous experiment, during the eight hours of treatment both males and females reduced their quiescence level whilst increasing their walking activity (fig.~\ref{fig:zt0-8-dsd}A).
+Males also increased their amount of micro-movements.
+Immediately after the treatment had stopped, at \gls{zt}~=~8~h, treated animals exhibited more quiescence than their respective control groups. 
+However, the effect in females was limited in both amplitude and duration.
+
+The number of stimuli increased monotonically, to peak around 50~h$^{-1}$, in the end of the treatment (fig.~\ref{fig:zt0-8-dsd}B). 
+Overall, females and males were startled
+\bootci{}{208}{185}{235}, and
+\bootci{}{377}{309}{456}, times,
+respectively.
+
+The further quantification of the homeostatic rebound showed an effect of the treatment (fig.~\ref{fig:zt0-8-dsd}C).
+Indeed, females and males slept \bootci{}{9.91}{6.03}{14.4} and \bootci{}{30.4}{22.7}{37.3} additional minutes, compared to prediction, respectively.
+
+The difference of constitutive day quiescence between both sexes makes it difficult to directly compare the amplitude of their respective rebounds.
+Indeed, females are only rarely quiescent during the \gls{l} phase,
+whilst males are known to have a so-called `siesta'.
+Therefore, it is conceivable that \gls{l} phase sleep deprivation only depletes a modest amount of sleep in females, 
+which could explain the lower amplitude of their rebound.
+
+In males, at least, this result suggests that, like nightly sleep, daily quiescence is, to some extent regulated by a homeostat.
+However, it is yet unclear whether day and night quiescence are functionally related, if they share the same homeostat and how they interplay with one another as well as with the internal clock.
+
+
+\subsection{Prolonged sleep deprivation}
+
+%Sleep is often argued as essential to animal survival,
+%which is supported by the observation, in apparently several animal models,
+%that acute sleep deprivation is lethal.
+%In the field of sleep biology, these results are very debated, and it is still unclear why animals die, and whether it is due to confounding stress.
+
+Sleep is often assumed to carry out a vital function\cite{cirelli_is_2008}, which is empirically supported by the observation that sleep deprivation is lethal\cite{shaw_stress_2002}.
+In the introduction to this chapter, I have explained that this conclusion is not always supported by conclusive evidence (see subsection~\ref{sec:function}).
+In particular, in \dmel, it remains unclear whether\emd{}and why\emd{}flies die during prolonged sleep deprivation.
+One landmark study attempted to address this question, but the authors could not perform automatic \gls{dsd} at the time, which severely limited their objectivity (\eg{} `manually' delivered stimuli for several days) and throughput ($N=12$) of their results\cite{shaw_stress_2002}.
+%rendering the conclusion of this landmark paper uncertain.
+
+I consider this question crucial for the field, 
+and saw an opportunity to address it by using my automatic \gls{dsd} apparatus over both a long duration and a large number of animals. 
+The original study described a lethal effect after 48~h to 72~h of sleep deprivation\cite{shaw_stress_2002}.
+Therefore, I decided \emph{a priori} to dynamically deprive flies of sleep (with an interval of 20~s) over 9.5~days
+(fig.~\ref{fig:long-sd}).
+
+\input{\figdir/long-sd}
+
+To my great surprise, only 3.3\% of the animals died during the treatment (\ie{} 6 controls and 7 sleep-deprived animals, all sexes).
+The reduction of quiescence seemed however effective throughout the experiment\emd{}though it appeared less so at the end (fig.~\ref{fig:long-sd}A).
+In the controls, the daily amount of quiescence appeared stationary.
+
+Wrapping measurements, during treatment, over one day shows how quiescence restriction affected all behavioural 
+states with respect to the time of the day (fig.~\ref{fig:long-sd}B).
+For both treated males and females, quiescence was reduced nearly to zero, whilst walking was consistently increased. 
+In the sleep-deprived population, the walking activity was increased, but remained variable along the day, suggesting the persistence of the circadian drive.
+The average position was also affected, with values close to 0.5 (the midline of the tube) at any time of the day for treated animals.
+
+In treated females, micro-movements were overall reduced, except in the end of the \gls{d} phase, where their propensity increased, compared to the undisturbed control.
+Interestingly, the peak of micro-movement that was present in controls, after the \gls{l}$\rightarrow$\gls{d} transition, was not visible in the treated group.
+In contrast, in males, the treated group had increased micro-movement throughout the day.
+
+
+The number of stimuli delivered was highly modulated along the day (fig.~\ref{fig:long-sd}C).
+Interestingly, males and females experienced more stimuli during the \gls{l} and \gls{d} phases, receptively.
+This results suggests a possibly large effect of the circadian clock on the sleep pressure, despite a consistent deprivation.
+
+Immediately after the end of the \gls{dsd}, slightly more quiescence and less walking were observed in both males and females.
+In females, the effect persisted during the following days (fig.~\ref{fig:long-sd}D).
+The quantification of the quiescence rebound showed a significant effect in both males and females (fig.~\ref{fig:long-sd}E), though the amplitude was limited to 
+\bootci{}{18.867}{13.343}{24.756}, minutes for females and 
+\bootci{}{19.272}{10.168}{28.175}, minutes for males.
+It is however not possible to directly compare such numbers with previous experiments as flies were also older.
+
+
+Despite animals surviving throughout the treatment, I hypothesised that sleep deprivation could have persistent effects on overall longevity.
+I, therefore, decided to keep animals individually after the experiment and monitor their survival daily in order to assess their overall lifespan (fig.~\ref{fig:long-sd-lifespan}).
+
+\input{\figdir/long-sd-lifespan}
+
+The effect of 9.5 days of quiescence restriction did not alter lifespan in either males or females (fig.~\ref{fig:long-sd-lifespan}A). 
+In fact, all groups had statistically the same longevity ($l$).
+For females, 
+\bootci{median(l_{control})}{26}{25}{28}, days and
+\bootci{median(l_{SD})}{26}{24}{27}, days.
+For males, 
+\bootci{median(l_{control})}{26}{25}{27}, days and
+\bootci{median(l_{SD})}{26}{25}{28}, days (Kaplan–Meier estimates of the median).
+
+I then wondered whether, within the treated population, mortality could be affected by how much stress animals had undergone.
+I, therefore, attempted to predict lifespan from the number of stimuli delivered, 
+but found, instead, that it was overall increased by \bootci{}{0.529}{0.338}{0.710}, h$\cdot$stimulus$^{-1}$ (R$^2$=0.100).
+(fig.~\ref{fig:long-sd-lifespan}B).
+
+
+The control population provided me with a collection of animals for which I had both quantified lifespan and behavioural states.
+I hypothesised that if sleep was crucial for lifespan, then animals that had spontaneously lower quiescence would live shorter.
+Therefore, I studied the relationship between the overall proportion of time engaged in behavioural states and longevity (fig.~\ref{fig:long-sd-lifespan}C), for both sleep-deprived and controls.
+I first tried to explain lifespan with a linear model using treatment, sex and behavioural state as covariates, but could not find a significant effect of any predictor on lifespan (R$^2$ =  0.023).
+I also attempted using non-linear regression techniques.
+For instance, random forest regression\cite{breiman_random_2001}
+explained only 0.48\% of the variance, suggesting no obvious relationship between overall behaviour occurrence and longevity.
+
+The results of this experiment are in stark contrast with the consensus that sleep deprivation is lethal to flies. 
+It also shows that in such experimental conditions, lifespan is hard to predict from overall quiescence (or, for that matter, other behavioural variables), altogether challenging the notion that there is a necessary trade-off between living and sleeping.
+
+
+\section{Methods}
+\label{subsec:sd-matmet}
+\subsection{Experimental conditions}
+Unless otherwise stated, experimental conditions were similar to the ones described in the previous chapter's methods section (see subsection~\ref{subsec:mm-xp-conditions}).
+The rare flies that died during the experiment were excluded from the analysis\emd{}expect, of course for the last experiment, which specifically measures lifespan.
+
+
+\subsection{Sleep deprivation}
+With the exception of the
+last experiment (fig.~\ref{fig:long-sd-lifespan} and~\ref{fig:long-sd}),
+sleep deprivation was carried by rotating individual tubes with the servo module(see description in subsection~\ref{sec:servo-module}).
+																											 
+In all cases, animals were recorded for, at least, two full days of baseline before treatment.
+Treated animals were systematically interspersed with non treated controls.
+
+\subsection{Prolonged sleep deprivation}
+To test the effect of long-lasting \gls{dsd} on lifespan (fig.~\ref{fig:long-sd-lifespan} and~\ref{fig:long-sd}), the motors of the `optomotor module' were used (see description in subsection~\ref{sec:optomotor}).
+An interval of 20 seconds of immobility was set to trigger the rotation of an experimental tube.
+In order to ensure good quality food (\eg{} prevent it from drying) throughout the whole experiment, flies were transferred to a fresh tube at day~7 after the onset of the experiment.
+After 9.5 days of \gls{dsd}, flies were allowed to recover for 3 days whilst still monitored in ethoscopes at 25$^{\circ}$C.
+After this recovery phase, each individual animal was moved to a new tube (flies remained individually housed) and kept at 29$^{\circ}$C.
+Mortality was scored daily and flies were changed to a fresh tube every ten days.
+
+\subsection{Rebound calculation}
+\label{subsec:mm-rebound}
+Quiescence rebound was expressed as the difference between the average quiescence during rebound and the expected quiescence.
+The values of expected quiescence were inferred by a linear regression between 
+the reference baseline quiescence and the value during the rebound period,
+in the relevant control population.
+The rebound period was always the first three hours following the end of a given treatment.
+Formally, the homeostatic rebound $h_i$ of an individual $i$ was expressed as:
+
+\begin{align}
+h_i &=  r_i - \hat{r_i} \\
+\hat{r_i} &= \alpha + \beta{} b_i
+\end{align}
+
+
+Where,
+\begin{itemize}
+	\item $\hat{r}$ is the \emph{predicted} quiescence  \emph{after} treatment ($t \in [x,x+3]$~h),
+	\item $r$ is the \emph{measured} quiescence  \emph{after} treatment ($t \in [x,x+3]$~h),
+	\item $b$ is the \emph{measured} quiescence \emph{before} treatment  ($t \in [x - 24 ,x-21]$~h), and
+	\item $\alpha$ and $\beta$ are the coefficients of the linear regression $r_C = \alpha + \beta{b_C}$ on the control group $C$.
+\end{itemize}
+
+\begin{align}
+\alpha &=  \bar{r_C} - \beta\bar{b_C} \\
+\beta &= \frac{Cov(r_C, b_C)}{Var(b_C)}
+\end{align}
+
+\subsection{Statistics}
+Unless otherwise stated, the error bars and shaded areas around the mean are 95\% confidence interval computed using basic bootstrap resampling\cite{efron_bootstrap_1992} with $N=1000$.
+For the survival analysis, the Kaplan–Meier, which contained right-censored data, estimates of the median were computed on bootstrap replicates.
+
+\subsection{Software tools}
+All data analysis was performed in \texttt{R}\cite{r_core_team_r_2017}, using the rethomics framework (see chapter~\ref{rethomics} and \cite{geissmann_rethomics_2018}).
+Figures were drawn using \texttt{ggplot2} \cite{wickham_ggplot2_2016} and survival plots were generated \texttt{GGally}\cite{schloerke_ggally_2018}.
+
+\newpage
+\section{Summary}
+
+\begin{itemize}
+	\item Dynamic quiescence restriction overnight leads to subsequent rebound.
+	\item It is parsimonious as rebound can be elicited by only a few stimuli.
+	\item It is also specific as quiescence is not (or only slightly) increased after starling walking animals.
+	\item No lethality from prolonged dynamic quiescence restriction could be measured.
+	\item Average quiescence does not predict lifespan.
+\end{itemize}
+

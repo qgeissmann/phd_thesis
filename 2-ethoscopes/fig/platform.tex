@@ -1,0 +1,24 @@
+\begin{figure}[h!]
+  \centering   
+    \includegraphics[width=0.95\textwidth]{\currfiledir/.\currfilebase.pdf}
+  \caption[The ethoscope platform]{\ctit{The ethoscope platform.}
+  	\textbf{A},~Schematic representation of the hardware components of the ethoscope platform.
+  	It contains multiple ethoscopes and a single `node'.
+  	Each device is a standalone tracking unit that processes video on-board. 
+  	In the laboratory, the devices communicate through a custom wireless network.
+	\textbf{B},~Software side of ethoscope platform.
+	The node runs three main services: 
+	the `node server' to list and control ethoscopes though a web interface,
+	the  `backup server' to save experimental results and 
+	the `update server' to maintain the platform.
+	The ethoscope devices run the `ethoscope server' that performs video tracking and exposes their status, in real time, to allow for quality control.
+	They can also be maintained through their own `update server'.
+	Data is saved on a \texttt{MySQL} database by each ethoscope, and mirrored as an \texttt{SQLite .db} file on the node side.
+  \label{fig:\currfilebase}
+  }
+\end{figure}
+
+
+
+
+

@@ -1,0 +1,349 @@
+\edef\figdir{\currfiledir/fig}
+
+\chapter{Baseline Sleep} \label{baseline}
+
+\epigraph{
+	%\includegraphics[width=.8\textwidth]{\figdir/heraclitus.pdf}
+	`It is plain also that insects sleep; for there can be no mistaking their condition of motionless repose.'}{--- Aristotle, \emph{History Of Animals}~\cite[book~IV, chap.~10]{aristotle_history_1965}}
+
+\section{Background}
+
+
+The idea that, like vertebrates, insects sleep is by no means new.
+Indeed, Aristotle himself was already convinced of it more than two millennia ago. 
+In fact, Pliny the Elder had also noticed that during their bouts of immobility, insects were less responsive to external stimuli as he wrote, four centuries after:
+`It is quite evident, also, that insects sleep, from the silent stillness which they preserve; and even if a light is put close
+to them, they will not be awoke thereby.'\cite[book~X, chap.~97]{pliny_the_elder_natural_1855}.
+
+It is however only recently that insect sleep became a subject of experimental research. 
+In particular, in the early 2000s, its characterisation in \droso{} paved the way for an ever so growing literature.
+Even though the first studies, and a few others, worked on its phenomenological description as a behaviour, research, since, seems to have mostly focussed on the genetic determinism and neuronal circuitry of sleep behaviour\emd{}possibly because of the pre-existing background and interest of the involved scientist, but also, maybe, because the tools were already available to carry out neuro-genetic experiments.
+Indeed, despite the description of sleep mutants and the characterisation of neuronal circuits, 
+there are many uncertainties regarding the answer to higher level questions\emd{}for example, whether sleep happens during the \gls{l} phase, what is the validity of the `five-minute rule', how sleep changes after mating, what happens when flies cannot sleep and so on.
+These gaps in our knowledge suggest that, perhaps,
+a phenomenological analysis of sleep behaviour from the ground up would complement the ongoing enquiries on the low-level mechanisms of sleep.
+
+In chapter~\ref{ethoscopes}, I presented a novel method to measure the stillness that is characteristic of sleep as an alternative to the traditional motion detection paradigm. I also emphasised that my method could be applied to a large number of animals.
+Then, in chapter~\ref{rethomics}, I provided a solution to handle the large amount of data generated in a statistical framework, and suggested it could be instrumental for new types of analysis.
+
+In the chapter herein, I will use these two tools to, firstly, illustrate how the scoring of immobility, and ultimately sleep, differ between ethoscopes and \gls{dam} and show how such a difference can be critical even when comparing groups of healthy wild-type males and females. 
+Secondly, I will show that it is possible to transcend the binary understanding of activity in the context of sleep by introducing a new state: `micro-movements'. 
+Thirdly, I will use this addition, but also positional data, to understand the discrepancies between ethoscope and \gls{dam}.
+Fourthly, I will show how the use of micro-movements sheds light on the change of behaviours that occur after mating, in females.
+Finally, I will examine the extent to which behaviours are variable between, but consistent within, animal.
+
+
+Part of the work presented in this chapter is available as a preprint\cite{geissmann_most_2018}. It results of a collaboration, in equal part, between Esteban Beckwith, without whom this work could not have been carried, and myself.
+
+\section{Comparison between ethoscope and \gls{dam}}
+
+I was first interested in comparing activity and sleep in wild-type flies when scored either with ethoscopes or the traditional \gls{dam} system.
+Since the ethoscope tracks position, it is possible to emulate \gls{dam} data from ethoscope results by numerically detecting `midline' crosses\emd{}a method also known as `virtual DAM'\cite{gilestro_video_2012}\emd{}and analyse the same data with both approaches.
+
+%In order to assess the implications of the use of ethoscopes, with my movement detection algorithm, on the quantification of activity and sleep,
+I, therefore, started by monitoring a large population of socially naive males and females ($N_{male} = 485$ and $N_{female} = 881$) hosted in separate tubes for five consecutive days (see method subsections~\ref{subsec:mm-stock}~and~\ref{subsec:mm-xp-conditions} for details) and compared both immobility and sleep between both methods (fig.~\ref{fig:activity-sleep-dam-vs-etho}).
+Compared to the ethoscope, \gls{dam} scoring consistently overestimated both immobility 
+(fig.~\ref{fig:activity-sleep-dam-vs-etho}A) and  sleep (fig.~\ref{fig:activity-sleep-dam-vs-etho}D)\emd{}as scored using the five-minute rule. 
+Overall, immobility was higher with \gls{dam}, both for
+females 	(\bootci{P(immobile_{DAM})}{0.747}{0.742}{0.753}, against
+			 \bootci{P(immobile_{etho})}{0.419}{0.411}{0.426})
+and, to a lower extent, 
+males       (\bootci{P(immobile_{DAM})}{0.829}{0.824}{0.834}, against
+			 \bootci{P(immobile_{etho})}{0.684}{0.678}{0.691}).
+			 
+Overall, sleep was also higher with \gls{dam}, both for
+females 	(\bootci{P(asleep_{DAM})}{0.607}{0.600}{0.614}, against
+			 \bootci{P(asleep_{etho})}{0.208}{0.201}{0.215})
+and males   (\bootci{P(asleep_{DAM})}{0.786}{0.779}{0.793}, against
+			 \bootci{P(asleep_{etho})}{0.430}{0.421}{0.438}).
+ 
+When comparing males to females with both methods, different qualitative observations were made.
+For instance, immediately after the onset of the \gls{d} phase (time~$\in [12,14]~h$), midline crossing results suggest that females were less active than males. 
+Instead, my scoring method shows that, during these two hours, females were, in fact, more active than males.
+It, therefore, appears that the level of consensus between both methods depends on the time of the day and sex.
+
+In order to understand how and when methods critically differed, I computed a rank correlation (Spearman's $\rho$) on the amount of immobility (fig.~\ref{fig:activity-sleep-dam-vs-etho}B)  and sleep  (fig.~\ref{fig:activity-sleep-dam-vs-etho}E) between both methods for all consecutive  30~min time windows in 24~h. 
+Values close to one denote a strong consensus between methods\emd{}since individual ranks are conserved.
+
+Interestingly tools were very consensual with one another for males at the transition time, which corresponds to their active periods.
+For females, \gls{dam} and ethoscopes had the strongest consensus when females were the most inactive, by the end of the \gls{d} phase (at time~$\in [22,23.5]$).
+In contrast, $\rho$ was below 0.5 around the L~$\rightarrow$~D transition, which indicates low consensus between both methods.
+
+To characterise inactivity and sleep architecture, I also examined the relationship between bout number and average bout length, during both \gls{l} and \gls{d} phases (fig.~\ref{fig:activity-sleep-dam-vs-etho}C~and~F).
+There were striking differences between the two scoring methods.
+Firstly, and unsurprisingly, the overall average duration of inactivity bouts was greatly reduced in ethoscopes (\bootci{duration_{etho}}{104.7~s}{102.4}{106.8}) compared to \gls{dam} (\bootci{duration_{DAM}}{819.4~s}{773.7}{874.5}) (fig.~\ref{fig:activity-sleep-dam-vs-etho}C).
+Secondly, and less trivially, the comparison of sleep architecture between males and females yielded in different conclusions according to the method used (fig.~\ref{fig:activity-sleep-dam-vs-etho}F). Indeed, during the \gls{l} phase, males had longer sleep bouts according to the midline approach, whilst ethoscopes scored a mostly higher number of sleep bouts.
+
+\input{\figdir/activity-sleep-dam-vs-etho}
+
+\section{A three-states model of behaviour}
+
+My results hinted that \gls{dam} and ethoscope scoring accounted for different\emd{}and possibly complementary\emd{}aspects of behaviours.
+The former detecting  exclusively animals walking along their tube, whilst the latter also included small movements in the activity.
+In other words, the ethoscope detects `micro-movement', a new class of movement that was traditionally accounted as quiescence.
+I speculated that micro-movements were qualitatively different from both walking activity and quiescence, and therefore decided to capture behaviour as a discrete variable with three states: walking, micro-movement and quiescence.
+Using the same raw data as in fig.~\ref{fig:activity-sleep-dam-vs-etho},
+I scored one of these three states for each consecutive minute of recording (fig.~\ref{fig:behavioural-state}, see method subsection~\ref{subsec:mm-behav-scoring} for detail).
+
+\input{\figdir/behavioural-state}
+
+To illustrate the nature of this new variable, the data of six individual animals are shown in fig.~\ref{fig:activity-sleep-dam-vs-etho}A.
+Interestingly, the top row shows a female that featured a large amount of micro-movements during its \gls{d} phases, but only a few midline (grey dotted line at $Position = 0.5$) crosses.
+Indeed, it appears that such micro-movements occurred in close proximity to the food ($Position \rightarrow 0$).
+
+To understand the time dynamic of these three states at the population level, I computed the average 
+occurrence for each behavioural state in each consecutive 30 minutes window of a circadian day (fig.~\ref{fig:activity-sleep-dam-vs-etho}B).
+In females, the overall quiescence, micro-movement and walking probabilities were 
+\bootci{P(q)}{0.269}{0.262}{0.277},
+\bootci{P(m)}{0.433}{0.427}{0.438}, and
+\bootci{P(w)}{0.298}{0.292}{0.304}.
+
+Quiescence was higher during the \gls{d} phase compared to the \gls{l} phase.
+Furthermore, it was only dominant in the at the end of the \gls{d} phase. 
+Interestingly, micro-movement highly varied with the time of day, with a peak immediately after L~$\rightarrow$~\gls{d} transition.
+Walking was higher during the L phase compared to the \gls{d} phase and dominant after the \gls{d}~$\rightarrow$~L as well as before the L~$\rightarrow$~\gls{d} transitions.
+
+In males, the overall quiescence, micro-movement and walking prevalences were 
+\bootci{P(q)}{0.519}{0.512}{0.527},
+\bootci{P(m)}{0.286}{0.281}{0.291}, and
+\bootci{P(w)}{0.195}{0.190}{0.200}.
+Quiescence was the dominant behaviour for most of the time, except around phase transitions.
+Micro-movement did not appear to vary strongly over time and was overall much lower than in females.
+Walking was overall rare and happened almost exclusively before and after both transitions.
+
+Subjective observation (not shown) of video recording indicated that micro-movements in females were consistent with feeding behaviour (proboscis extension on the food).
+In order to corroborate the hypotheses that female micro-movements correspond to feeding, I computed the distribution of position for specific behaviours (fig.~\ref{fig:activity-sleep-dam-vs-etho}C).
+As expected, females micro-movements happened in close proximity to the food with \bootci{}{51.3\%}{50.3}{52.2}, of them occurring within only 4~mm of the food end.
+As previously suggested\cite{hendricks_rest_2000}, overall, flies seemed to engage in quiescence in a preferred position that was close, but not on, the food (approximately at $Position \approx 0.2$).
+Surprisingly, in males\emd{}and in contrast with females\emd{}, the position distributions of micro-movements and quiescence were extremely similar, and micro-movement did not seem to often occur on the food.
+
+
+To visually summarise the above results, I developed a representation that could, in principle, be used by experimentalists to create a `behavioural fingerprint' of multiple populations, which would be instrumental for screens.
+I opted to represent behavioural trajectories in a ternary plot, as a timeline through a 2-simplex (fig.~\ref{fig:clustering-mf}).
+Along a day, females (fig.~\ref{fig:clustering-mf}A) `visited' all dimensions of the behavioural space whilst the variation in males (fig.~\ref{fig:clustering-mf}B) followed a direction mostly orthogonal to micro-movement.
+
+\input{\figdir/clustering-mf}
+
+To consider whether the individual paths through this behavioural space could be instrumental to classify flies, I performed a hierarchical clustering of all animals and assessed how such unsupervised approach could recapitulate known individual labels (\ie{} male or female).
+Briefly, a distance measurement, based on Bhattacharyya coefficient\cite{bhattacharyya_measure_1943}, was computed between each pair of animals, and \gls{upgma}\cite{sokal_statistical_1958} was applied (see method subsection~\ref{subsec:mm-clustering}) (fig.~\ref{fig:clustering-mf}C).
+Both groups clustered very well with a
+Fowlkes-Mallows index  $\text{FM} = 0.930$ larger than expected under the null model, \bootci{\text{FM}_{H_0}}{0.497}{0.495}{0.498}, (see method subsection~\ref{subsec:mm-clustering}).
+Interestingly, a group of 13 females, mostly from different experimental blocks, clustered together within the male group suggesting a cryptic, but consistent, sub-population of females that behave very differently from others.
+
+\section{Effect of mating on female behaviour}
+
+Since, in females, micro-movements occur largely on the food, I had hypothesised that they correspond to food-related behaviours, such as eating and egg laying.
+I then reasoned that the possibility of scoring micro-movements would reveal crucial to assess activity in animals that modulate their feeding behaviour.
+It had been shown that, after mating, females \dmel{} dramatically increase their feeding behaviour\cite{ribeiro_sex_2010}, providing a convenient example of a documented and naturally occurring change of feeding behaviour.
+I, therefore, designed an experiment aiming at comparing mated females to non-mated controls with respect to their behavioural states and position preference (fig.~\ref{fig:mated-females}).
+
+\input{\figdir/mated-females}
+
+To start with, a population of 238 virgin females was monitored for a baseline assessment of 48~h.
+Then, a male was introduced in all tubes for a short duration which allowed only for partial mating efficiency, resulting in two populations of females, $N_{mated} = 86$ and $N_{non\text{-}mated} = 152$.
+After removing the males, all females were scored for another two days (see method subsection~\ref{subsec:mm-mating}). 
+Conveniently, the non-mated had likely also experienced the presence of a male and courting, but not mating, and could serve as a faithful control.
+
+Immediately after mating, grey bar in figure~\ref{fig:mated-females}A, mated females widely reduced walking and, concomitantly, increased their micro-movements.
+The overall elevation of micro-movements was very sustained throughout the rest of the experiment, with consistently higher values in the mated population.
+On average, mating resulted in an increased probability of micro-moving to \bootci{}{0.712}{0.694}{0.729}, against \bootci{}{0.409}{0.395}{0.425}, in the controls.
+
+Interestingly, mated females reduced their walking probability during the L, but not in the D,  phase.
+In contrast, quiescence was almost exclusively reduced in the D phase.
+Furthermore, the position of mated females was on average much lower (\ie{} closer to the food), which also corroborates the hypothesis of increased feeding (fig.~\ref{fig:mated-females}A, bottom panel).
+
+
+Because of the probabilistic nature of the mating protocol, the possibility that,
+for instance, females that had micro-moved more may have had greater mating success could not be \emph{a priori} excluded.
+However, no statistical effect of average behaviour state values during baseline on mating success could be found (binomial regressions, $p\text{--value} > 0.05~\forall~behaviour$).
+In other words, there were no obvious and strong link between the behaviour before mating and the probability of mating.
+
+To put in context the amplitude and the nature of such sustained behavioural change after mating, I decided to compare both mated and non-mated populations to an independent percentile group of $N_{low\text{-}quiescence} = 110$ virgin females (from fig.~\ref{fig:activity-sleep-dam-vs-etho}) that had approximately equal overall quiescence, \bootci{P(q)}{0.168}{0.164}{0.173}, as the mated group \bootci{P(q)}{0.154}{0.141}{0.168} (fig.~\ref{fig:mated-females}B).
+Despite quiescence amounts being equivalent, the topology of the behavioural fingerprint appeared radically different between this spontaneously active but non-mated group and the mated females. In fact, former seemed to resemble more the non-mated group.
+
+To further describe the similarity of fingerprints between and within groups, I performed hierarchical clustering using \gls{upgma} (fig.~\ref{fig:mated-females}C). 
+The obtained clusters recapitulated the initial labels accurately
+$\text{FM} = 0.800$, with \bootci{\text{FM}_{H_0}}{0.328}{0.324}{0.334}
+(see method section\ref{subsec:mm-clustering}).
+
+
+Furthermore, the average pairwise distances
+between individuals suggested that the mated female group behaved as an outgroup:
+\bootci{\bar{D}(mated,non\text{-}mated)}{0.118}{0.117}{0.119},
+\bootci{\bar{D}(mated,low\text{-}quiescence)}{0.093}{0.092}{0.094}, and
+\bootci{\bar{D}(non\text{-}mated,low\text{-}quiescence)}{0.082}{0.081}{0.083},
+confirming that the consequences of mating on behaviour go beyond a mere scaling of quiescence.
+
+
+\section{Endogenous determinism of behaviour}
+
+I noticed that most behavioural variables I had recorded so far were surprisingly both very consistent within individuals, over several days, but highly variable between individuals, despite biologically homogeneous population (genetics, age and social interactions). 
+For instance, figure~\ref{fig:overview} shows the sleep amount, as colour intensity, for all individuals used in figure~\ref{fig:activity-sleep-dam-vs-etho}.
+Animals are sorted by sleep amount and represented by a single row.
+
+\input{\figdir/overview}
+
+The inter-individual variability in the amount of sleep was high for both males ($P(asleep) = 0.43,~\text{sd} = 0.10$) and females ($P(asleep) = 0.21,~\text{sd} = 0.11$).
+In addition, it appeared that individuals had a tendency to retain their sleep pattern over time.
+In other words, there seemed to be a strong positive correlation between sleep at day $d$ and $d+1$, for the same animal.
+
+
+It was however unclear whether this hypothetical correlation resulted from intrinsic biological variables or, rather, from confounding factors (such as the differences in light intensity and food amount across experimental tubes or even from scoring discrepancies between ethoscopes).
+To gain insight into the source of such variability, I designed a new experiment in which flies (males and females) were monitored for six days.
+Then, animals were all transferred to a new experimental tube and systematically interspersed into a new region of interest, machine and experimental incubator (see methods subsection~\ref{subsec:mm-endogenous-determ}). 
+Subsequently, monitoring was carried out for another six days (fig.~\ref{fig:tube-change-correlation}). 
+
+
+\input{\figdir/tube-change-correlation}
+
+The three behaviours of interests (quiescence, micro-movement and walking) were scored (fig.~\ref{fig:tube-change-correlation}A).
+For all individuals, the average time engaged in all three states was computed for each day.
+Since preliminary enquiry had suggested that animals tend to be quiescent in a consistent position along days, I also computed the average location at which animals rest ($Position | q$).
+
+Then, I studied how all four variables remained correlated to their own value on the first day and, in particular, the extent to which the change of environment disrupted this relationship (fig.~\ref{fig:tube-change-correlation}B). 
+
+Very interestingly, all three behavioural states had a positive correlation $\rho > 0$ throughout the experiment (before and after shuffling flies in the animals' environment), which indicates that intrinsic factors determine, at least partially, the amount of time engaged in these behaviours.
+In sharp contrast, the preferred resting position, which was also auto-correlated before tube change, lost all significance $\rho \approx 0$ after the tube transfer, suggesting rather an environmental determinism of resting position.
+
+
+\section{Methods}
+
+\subsection{Fly stocks}
+\label{subsec:mm-stock}
+
+CantonS \dmel{} obtained from Ralf Stanewsky's laboratory (University of M{\"u}nster) were used for all experiments.
+All flies were raised under a 12~h light:12~h dark (LD) regimen at 25$^{\circ}$C on standard corn and yeast media.
+Unless otherwise stated, all animals were socially naive.
+
+\subsection{Experimental conditions}
+\label{subsec:mm-xp-conditions}
+
+For all experiments, 7--8 days old pupae were sorted into glass tubes (70$\times$5$\times$3 mm [length $\times$ external diameter $\times$ internal diameter]) containing regular food. 
+When animals reached 2--3 days old, tubes were loaded into ethoscopes (20 animals per machine).
+All experiments were carried out under constant LD condition, 50--70\% humidity, in incubators set at 25$^{\circ}$C. 
+Animals always had \emph{ad libitum} access to regular food.
+Flies that died during the experiment were excluded from the analysis.
+
+\subsection{Female mating}
+\label{subsec:mm-mating}
+To evaluate the effect of mating on sleep (fig.~\ref{fig:mated-females}), a naive male was introduced in the tube of each naive female and allowed to interact for 2~hours, $ZT \in [06,08]~h$.
+Afterwards, males were all discarded and the activity profile of the females was recorded for another 3.5~days.
+Because of the short duration of the interaction and the restrictive space of the glass tube the probability of mating was reduced, which resulted in two groups: females that were either mated or only courted (non-mated).
+Effective mating was determined \emph{post hoc} by visually scoring the presence of larvae in the tube four days after the interaction. 
+
+\subsection{Endogenous determinism of behaviour}
+
+\label{subsec:mm-endogenous-determ}
+
+To study the individual consistency of behavioural states over several days (fig.~\ref{fig:tube-change-correlation}), behaviour of both males and females was first recorded for seven days.
+Then, individual animals were transferred to new tubes.
+In order to minimise the effect of hidden confounding variables (\eg{} variation of light, humidity, vibration, ethoscopes and incubators), on behaviour, the new position of all the tubes was systematically interspersed (\emph{sensu} \cite{hurlbert_pseudoreplication_1984}).
+
+
+\subsection{Behaviour scoring}
+\label{subsec:mm-behav-scoring}
+`Immobility' was scored by thresholding corrected maximal velocity on ten-seconds epochs as described in section~\ref{sec:validation}.
+`Sleep' was computed using the five-minute rule: immobility bouts longer than 300~s were counted as sleep bouts.
+
+Behavioural states (\rev{$B \in {quiescence, micro\text{-}movement, walking}$}) were defined for each consecutive minute of behaviour according to the following rule:
+
+\begin{align}
+\rev{
+B_j = 
+\begin{cases}
+quiescence,            & \text{if } V_{corr_i} < 1\forall i\\
+micro\text{-}movement, & \text{else if } \sum^{i}{|X_i - X_{i-1}|} < T_d\\
+walking,               & \text{otherwise}
+\end{cases}
+}
+\label{eq:behav-scoring}
+\end{align}
+
+\rev{
+Where,
+\begin{itemize}
+	\item $i$ is the index of successive frames (at approximately 2~FPS) in a minute,
+	\item $j$ represents the resulting minute of scored behaviour,
+	\item $V_{corr}$ is the corrected velocity as described in subsection~\ref{subsec:velocity-correction},
+	\item $X$ is the position along the tube and
+	\item $T_d$ is a constant threshold of 15~mm on the distance moved above which $walking$ is scored. $T_d$ was defined empirically based on the observation of a bimodal distribution of the total distance moved in a minute (see fig.~\ref{fig:walked-dist-density}).
+\end{itemize}
+}
+
+\rev{
+All instantaneous velocities being lower than 1 in a minute implies the maximal velocity in any ten seconds epoch is also lower than 1.	
+}
+\input{\figdir/walked-dist-density}
+
+
+The space available inside each experimental tube was variable between individual animals due to the different amount of food and cotton wool. In order to compare flies position with respect to the boundary of their respective experimental environments, their position was expressed relative to the food ($Position = 0$) and the cotton wool ($Position = 1$)  edges:
+
+\begin{align}
+position &=  \frac{X - Q_{0.01}(X)}{Q_{0.99}(X - Q_{0.01}(X))}
+\end{align}
+
+Where, $Q_p$ is the quantile function.
+
+First and last percentiles were used instead of minimum and maximum to avoid the possible effect of spurious artefactual detections beyond the  physical limits of the tube.
+%Note that this method implies that the animals are in close proximity to each at least 1\% of observations, which
+
+
+\subsection{Hierarchical clustering}
+\label{subsec:mm-clustering}
+The dendrograms in figs.~\ref{fig:clustering-mf} and \ref{fig:mated-females} are the result of a hierarchical clustering using the \acrfull{upgma} method\cite{sokal_statistical_1958}. 
+
+During an interval of time, the proportion of time spent by an animal in a behavioural state can be formulated as an empirical discrete probability density function. In this context, the distance between each pair of animals was computed using the average of Bhattacharyya distances\cite{bhattacharyya_measure_1943} over the entire day:
+
+\begin{align}
+D(p,q) &=  \frac{\sum_{t \in T}{BD_t(p_t,q_t)}}{|T|} \\
+BD_t(p_t,q_t) &= -\ln (BC(p_t,q_t))\\
+BC(p_t,q_t) &= \sum_{x\in X} \sqrt{p_t(x) q_t(x)}
+\end{align}
+
+
+Where,
+\begin{itemize}
+	\item $BD_t$ is the Bhattacharyya distance at a time interval $t$,
+	\item $T$ is the set of \rev{consecutive 15~min} time intervals within a day:\\
+		$T=\{[0, 0.25), [0.25,0.5), ..., [23.75, 24)\} h$,
+	\item $BC_t$ is the Bhattacharyya coefficient at a time interval $t$,
+	\item $p$ and $q$ are the observed distributions of behaviour for two different individuals and
+	\item $X$ is a the set of discrete behaviours \rev{as defined in eq.~\ref{eq:behav-scoring}}: \\
+		$X = \{quiescent, micro\text{-}movement, walking\}$.
+\end{itemize}
+
+To assess the consensus between unsupervised hierarchical clustering and ground-truth labels,
+Fowlkes-Mallows index\cite{fowlkes_method_1983} ($FM$) was computed with:
+
+\begin{align}
+\text{FM} = \sqrt{ \frac {TP}{TP+FP} \cdot \frac{TP}{TP+FN}  }
+\end{align}
+
+Where,
+\begin{itemize}
+	\item $TP$ is the number of true positives,
+	\item $FP$ is the number of false positives and
+	\item $FN$  is the number of false negatives.
+
+\end{itemize}
+
+The expected value of FM under $H_0$ ($\text{FM}_{H_0}$)was obtained by computing the mean and percentiles on 10,000 label permutations.
+
+\subsection{Statistics}
+Unless otherwise stated, the error bars and shaded areas around the mean are 95\% confidence interval computed using basic bootstrap resampling\cite{efron_bootstrap_1992}, with $N=1000$.
+
+\subsection{Software tools}
+All data analysis was performed in \texttt{R}\cite{r_core_team_r_2017}, using the rethomics framework (see chapter~\ref{rethomics} and \cite{geissmann_rethomics_2018}).
+Figures were drawn using \texttt{ggplot2} \cite{wickham_ggplot2_2016} and ternary representations in were generated with \texttt{ggtern}\cite{hamilton_ggtern_2017}.
+\newpage
+\section{Summary}
+
+\begin{itemize}
+\item Traditional activity scoring greatly overestimates immobility and sleep compared to ethoscopes, and bias depends, at least, on time of the day and sex.
+\item The addition of a new behavioural state, micro-movements, is very informative and can account for such inconsistencies.
+\item Micro-movements are particularly relevant in females, for which they seem to correspond to feeding instances.
+\item In females, mating dramatically increases micro-movements and proximity to the food whilst reducing walking and quiescence.
+\item Although behaviour states are very variable between animals, they remain consistent throughout time and environment within the same individual.
+
+\end{itemize}
+
